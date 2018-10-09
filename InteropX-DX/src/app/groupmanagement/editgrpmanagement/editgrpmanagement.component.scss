@@ -1,0 +1,14 @@
+@import 'variables';
+.mat-dialog-title {
+  color: $primary-blue;
+  font-size: 22px;
+}
+.mat-dialog-actions{
+    float: right;
+}
+.user-form  .mat-form-field{
+    width:100%;
+}
+.alert{
+    color: $warning-red;
+}

@@ -1,0 +1,106 @@
+@import '../shared/_variables.scss';
+.table-bordered {
+  border: 0px;
+}
+
+.table-bordered .mat-header-row,
+.table-bordered .mat-row {
+
+  display: flex;
+  border-bottom-width: 0px;
+  border-bottom-style: solid;
+  align-items: unset;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: unset;
+  min-height: 30px;
+}
+
+.table-bordered>.mat-header-row>.mat-header-cell {
+  border: 1px solid #ddd;
+  line-height: 1.42856;
+  border-right-width: 0;
+  padding: 8px 10px;
+  text-align: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.table-bordered>.mat-header-row>.mat-header-cell:last-child {
+  border-right-width: 1px;
+}
+
+.table-bordered>.mat-row>.mat-cell {
+  border: 1px solid #ddd;
+  border-bottom-width: 0px;
+  line-height: 1.42856;
+  padding: 0px 10px;
+  word-break: break-all;
+}
+
+.table-bordered>.mat-row>.mat-cell:not(:last-child) {
+  border-right-width: 0px;
+}
+
+.table-bordered>.mat-row:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.mat-header-cell>.mat-sort-header-container {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-header-cell .mat-sort-header-container .mat-sort-header-arrow {
+  margin: 5px;
+}
+
+.table-bordered .mat-column-actions {
+  justify-content: center;
+}
+
+.table-bordered .mat-column-actions .editButton:not([disabled]),
+.table-bordered .mat-column-actions .extractButton:not([disabled]),
+.table-bordered .mat-column-actions .viewButton:not([disabled]) {
+  color: $primary-blue;
+}
+
+.table-bordered .mat-column-actions .deleteButton:not([disabled]) {
+  color: $warning-red;
+}
+
+.table-bordered .mat-column-actions .editButton:hover:not([disabled]),
+.table-bordered .mat-column-actions .extractButton:hover:not([disabled]),
+.table-bordered .mat-column-actions .viewButton:hover:not([disabled]) {
+  background-color: $primary-blue;
+  color: #fff;
+}
+
+.table-bordered .mat-column-actions .deleteButton:hover:not([disabled]) {
+  background-color: $warning-red;
+  color: #fff;
+}
+
+.table-bordered .mat-column-actions .editButton,
+.table-bordered .mat-column-actions .deleteButton,
+.table-bordered .mat-column-actions .extractButton,
+.table-bordered .mat-column-actions .viewButton {
+  padding: 5px;
+  min-width: 20px;
+  line-height: 26px;
+  border-radius: 3px;
+  max-height: 36px;
+}
+
+.table-bordered .mat-icon.material-icons {
+  font-size: 20px;
+}
+
+.table-bordered .mat-column-select {
+  max-width: 100px;
+  justify-content: center;
+}
+
+.table-bordered .mat-row:hover{
+  cursor: pointer;
+}

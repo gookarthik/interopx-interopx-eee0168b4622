@@ -1,0 +1,141 @@
+<h1 mat-dialog-title>Data Quality Report</h1>
+<div mat-dialog-content>
+    <mat-divider></mat-divider>
+    <div class="sub-head">
+        <h3> Datasource Name - {{dsName}}</h3>
+    </div>
+    <div class="expansion-container">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Extraction Id -{{exId}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="overallgrade">
+                    <h3>
+                        <span>Score: {{overallscore}}/100</span>
+                        <span>Issues: {{issues}}</span>
+                    </h3>
+                </div>
+                <div class="apptable">
+
+                    <mat-table [dataSource]="dataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+                        <ng-container matColumnDef="resources">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Resource Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <a (click)="onclick()"> {{element.resources}} </a>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="issues">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> No of Issues </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.issues}} </mat-cell>
+                            <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.fName === 'AARAN'}"> {{element.fName}} </mat-cell>-->
+                        </ng-container>
+
+                        <ng-container matColumnDef="records">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> No of Records </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.records}} </mat-cell>
+                            <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.lname == 'MILLER'}"> {{element.lname}} </mat-cell>-->
+                        </ng-container>
+
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+
+                </div>
+                <h3>Detailed Report</h3>
+                <div class="resource-expansin">
+                    <mat-accordion>
+                        <div id="patient">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{resourcename}}
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <mat-tab-group>
+                                    <mat-tab label="Issues">
+                                        <div class="issdisplay">
+                                            <a (click)="issuedisplay();">Patient Id-{{actualPatId}}</a>
+                                            <div *ngIf="issuedescription">{{issuedes}}</div>
+                                        </div>
+
+                                    </mat-tab>
+                                    <mat-tab label="Best Practices"> Content 2 </mat-tab>
+                                </mat-tab-group>
+
+                            </mat-expansion-panel>
+                        </div>
+                        <!--<mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Condition
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <mat-tab-group>
+                                <mat-tab label="Issues">
+                                    <div>
+                                        <a href>Patient Id-53468</a>
+                                    </div>
+                                    <div>
+                                        <a href>Patient Id-65894</a>
+                                    </div>
+                                    <div>
+                                        <a href>Patient Id-64879</a>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Best Practices"> Content 2 </mat-tab>
+                            </mat-tab-group>
+                        </mat-expansion-panel>-->
+                    </mat-accordion>
+                </div>
+                <!-- <mat-tab-group>
+                    <mat-tab label="Issues">
+                        <div>
+                            <a href>Patient Id-53468</a>
+                        </div>
+                        <div>
+                            <a href>Patient Id-65894</a>
+                        </div>
+                        <div>
+                            <a href>Patient Id-64879</a>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Best Practices"> Content 2 </mat-tab>
+                </mat-tab-group>-->
+            </mat-expansion-panel>
+            <!-- <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Extraction Id -10028
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="overallgrade">
+                    <h3>
+                        <span>Score: 87/100</span>
+                        <span>Issues: 7</span>
+                    </h3>
+                </div>
+                <mat-tab label="Issues">
+                    <div>
+                        <a href>Patient Id-53468</a>
+                    </div>
+                    <div>
+                        <a href>Patient Id-65894</a>
+                    </div>
+                    <div>
+                        <a href>Patient Id-64879</a>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Best Practices"> Content 2 </mat-tab>
+            </mat-expansion-panel>-->
+        </mat-accordion>
+    </div>
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>close</button>
+    <!-- <button mat-raised-button color="primary" [mat-dialog-close]="true">OK</button>-->
+</mat-dialog-actions>

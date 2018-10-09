@@ -1,0 +1,58 @@
+@import 'app/shared/variables';
+@import 'app/shared/custom-theme';
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  color: #333;
+  background: #f5f7fa;
+  font-size: 14px;
+}
+
+.base-button {
+  height: 36px;
+  padding-top: 13px;
+}
+
+.large-button {
+  @extend .base-button;
+  width: 275px;
+}
+
+.medium-button {
+  @extend .base-button;
+  width: 165px;
+}
+
+.small-button {
+  @extend .base-button;
+  width: 100px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 100px $secondary-blue;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primary-blue;
+  box-shadow: inset 0 0 100px $primary-blue;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: $primary-blue;
+}
+
+// .custom-scrollbar::-webkit-scrollbar {
+//   width: 5px;
+//   height: 5px;
+// }
+// .custom-scrollbar::-webkit-scrollbar-thumb {
+//   background: #aaa;
+// }

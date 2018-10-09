@@ -1,0 +1,41 @@
+@import 'variables';
+.content-header > h1 {
+    color: $primary-blue;
+    flex-grow: 8;
+  }
+.apptable {
+    margin-top: 10px;
+  }
+.content-header {
+    display: flex;
+    flex-direction: row;
+  }
+  
+.flex-container1{
+display: flex;
+  }
+.flex-container1 > div {
+    margin: 12px;
+    padding: 23px;
+    font-size: 20px;
+    width:430px;
+    height: 215px;
+    border-radius: 20px;
+    border: 1px solid #00579f;
+    text-align: center;
+    color:#00579f;
+  }
+.flex-container{
+    display: flex;
+}
+.flex-container > div {
+     margin: 12px;
+     padding: 23px;
+     font-size: 15px;
+     width:130px;
+     height: 100px;
+     border-radius: 20px;
+     border: 1px solid #00579f;
+     text-align: center;
+     color:#00579f;
+   }

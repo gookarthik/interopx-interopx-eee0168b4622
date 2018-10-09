@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{title}} Group</h1>
+<div mat-dialog-content>
+    <form [formGroup]="groupform" class="user-form">
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="name" placeholder="Name" required>
+        </mat-form-field>
+        <div *ngIf="groupform.controls['name'].errors && !groupform.controls['name'].pristine" class="alert alert-danger">
+            <div [hidden]="!groupform.controls['name'].errors.required">Group Name is required.</div>
+        </div>
+        <div *ngIf="groupform.controls['name'].errors?.pattern" class="alert alert-danger">
+            Enter a valid Group Name.
+        </div>
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="description" placeholder="Description" required>
+        </mat-form-field>
+    </form>
+
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>close</button>
+    <button mat-raised-button color="primary" (click)="onsave()" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

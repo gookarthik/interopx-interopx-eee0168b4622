@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>Data Quality Scoring by Datasources</h1>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-radio-group class="example-radio-group">
+        <mat-radio-button value="byextractions" (change)="optionselect($event)">By Extractions</mat-radio-button>
+        <mat-radio-button value="bydatasource" checked="true">By Datasource </mat-radio-button>
+    </mat-radio-group>
+    <div class="apptable">
+        <app-table [options]="tableOptions" (action)="getdataqualityscore($event)"></app-table>
+    </div>
+</mat-card>

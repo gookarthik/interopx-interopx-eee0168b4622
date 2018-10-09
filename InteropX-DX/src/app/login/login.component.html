@@ -1,0 +1,22 @@
+<div class="signin-content" style="margin:-30px;">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h2>Please Login to Continue</h2>
+        <mat-form-field class="full-width-input">
+          <input matInput placeholder="Username" formControlName="userName" required autofocus>
+          <mat-error *ngIf="isFieldInvalid('userName')">
+            Please enter Username
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <input matInput type="password" placeholder="Password" formControlName="password" required>
+          <mat-error *ngIf="isFieldInvalid('userName')">
+            Please enter Password
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="loginbtn">Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

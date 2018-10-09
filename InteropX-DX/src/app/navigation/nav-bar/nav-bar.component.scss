@@ -1,0 +1,60 @@
+@import 'variables';
+.menu-items {
+  min-width: 250px;
+}
+
+.mat-list .mat-list-item:first-child {
+  border-top: 1px solid #dddddd;
+}
+
+.mat-list .mat-list-item {
+  border-bottom: 1px solid #dddddd;
+}
+
+.mat-icon {
+  margin-right: 5px;
+  font-size: 20px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  color: $primary-blue;
+}
+
+.sidebar-menu {
+  margin: 10px 10px 0px 10px;
+}
+
+.mat-list-item span {
+  color: $primary-blue;
+}
+
+.mat-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.mat-nav-list .active {
+  background-color: $primary-blue;
+  color: $menu-list-active-text;
+}
+
+.mat-nav-list .active span {
+  color: $menu-list-active-text;
+}
+
+.mat-nav-list .active .mat-icon {
+  color: $menu-list-active-text;
+}
+
+.mat-raised-button .mat-primary {
+  background-color: $primary-blue;
+}
+
+.expandClass {
+  width: 100px !important;
+  text-align: right !important;
+}
+
+.nestedRoute .mat-list-item-content {
+  padding: 0 30px;
+}

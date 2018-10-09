@@ -1,0 +1,63 @@
+<h1 mat-dialog-title>{{title}} Data Set</h1>
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+  <form (ngSubmit)="onSubmit()" [formGroup]="dsetForm" class="dataSetForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Data Set Name" formControlName="datasetname" required>
+    </mat-form-field>
+    <div *ngIf="dsetForm.controls['datasetname'].errors && !dsetForm.controls['datasetname'].pristine" class="alert alert-danger">
+      <div [hidden]="!dsetForm.controls['datasetname'].errors.required">Data Set Name is required.</div>
+    </div>
+    <div *ngIf="dsetForm.controls['datasetname'].errors?.pattern" class="alert alert-danger">
+      Enter a valid Data Set Name.
+    </div>
+    <mat-form-field>
+      <mat-select formControlName="options" required>
+        <mat-option value="daily">Daily</mat-option>
+        <mat-option value="weekly">Weekly</mat-option>
+        <mat-option value="monthly">Monthly</mat-option>
+      </mat-select>
+      <mat-label>Select Scheduling Frequency</mat-label>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="time" matInput placeholder="Select Time" formControlName="time" required>
+    </mat-form-field>
+    <div *ngIf="dsetForm.controls['time'].errors && !dsetForm.controls['time'].pristine" class="alert alert-danger">
+      <div [hidden]="!dsetForm.controls['time'].errors.required">Please Enter valid Time </div>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel class="targetDatabasePanel">
+        <mat-expansion-panel-header [expandedHeight]="'48px'">
+          <mat-panel-title>
+            Target Database
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <input matInput placeholder="Target Database Name" formControlName="dbname">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="EndPointURL" formControlName="epurl">
+        </mat-form-field>
+        <!--<mat-form-field>
+          <mat-select>
+            <mat-option value="postgres">Postgres</mat-option>
+            <mat-option value="mysql">MySQL</mat-option>
+            <mat-option value="mssql">MSSQL</mat-option>
+          </mat-select>
+          <mat-label>Select Database</mat-label>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="JDBC URL">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Username">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Password">
+        </mat-form-field>-->
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <button mat-raised-button color="primary" type="submit" class="saveButton" [disabled]="dsetForm.invalid">Save</button>
+  </form>
+</div>

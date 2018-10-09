@@ -1,0 +1,12 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>Repository</h1>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <div class="apptable">
+        <app-table [options]="tableOptions" (action)="getrepositoryDetails($event);"></app-table>
+    </div>
+</mat-card>
+<app-loading [isLoading]="isLoadingResults"></app-loading>

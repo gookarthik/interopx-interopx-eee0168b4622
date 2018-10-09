@@ -1,0 +1,45 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.interopx.DX.services</groupId>
+	<artifactId>InteropX-DX-Services</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>InteropX Platform DX Services Parent Project</name>
+
+	<modules>
+		<module>ix-discovery-server</module>
+		<module>ix-repository</module>
+		<module>ix-audit</module>
+		<module>ix-datasource</module>
+		<module>ix-hl7-connector</module>
+		<module>ix-security-backend</module>
+		<module>ix-flatfile-connector</module>
+		<module>ix-datasets</module>
+		<module>ix-data-quality-scorer</module>
+		<module>ix-data-matching</module>
+		<module>ix-data-deduplication</module>
+		<module>ix-data-transformation</module>
+		<module>ix-security-management</module>
+		<module>ix-platform</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

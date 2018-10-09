@@ -1,0 +1,60 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>Group Management</h1>
+            <button color="primary" mat-raised-button (click)="createNewGroup();">Create Group</button>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-form-field class="example-full-width">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type here to Filter List">
+    </mat-form-field>
+    <mat-table [dataSource]="dataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="addmembers(row);">Add Members to Group</button>
+                    <button mat-menu-item (click)="editgroup();">Edit Group</button>
+                    <button mat-menu-item>Transfer Group Ownership</button>
+                    <button mat-menu-item (click)="deactivategroup(row);">DeActivate Group</button>
+
+                </mat-menu>
+            </mat-cell>
+        </ng-container>
+
+        <!--<ng-container matColumnDef="grpid">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Group ID </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                {{element.grpid}}
+            </mat-cell>
+        </ng-container>-->
+
+        <ng-container matColumnDef="grpname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Group Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.grpname}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="grpdesc">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Group Description </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.grpdesc}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="createdUname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Created By </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.createdUname}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" class="mat-elevation-z4">
+    </mat-paginator>
+</mat-card>

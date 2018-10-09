@@ -1,0 +1,29 @@
+@import 'variables';
+
+.mat-card-content {
+  padding-top: 30px;
+}
+.content-header > h1 {
+  color: $primary-blue;
+  flex-grow: 8;
+}
+
+.content-header {
+  display: flex;
+  flex-direction: row;
+}
+.exapptable {
+    margin-top: 15px;
+  }
+  .dsapptable{
+    margin-top: 15px;
+  }
+  
+  .table-bordered {
+    border: 0px;
+  }
+  .example-radio-group .mat-radio-button{
+    margin-top: 20px;
+    margin-right: 250px;
+    font-size: 18px;
+  }

@@ -1,0 +1,19 @@
+@import 'variables';
+.content-header h1 {
+  color: $primary-blue;
+  flex-grow: 8;
+}
+
+.content-header button {
+  flex-grow: 2;
+  align-self: center;
+}
+
+.content-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.mat-card-content {
+  padding-top: 30px;
+}

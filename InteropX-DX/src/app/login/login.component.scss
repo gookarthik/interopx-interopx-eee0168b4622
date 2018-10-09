@@ -1,0 +1,45 @@
+mat-card {
+  max-width: 500px;
+  margin: 2em auto;
+  text-align: center;
+  min-height: 300px;
+  border-radius: 20px;
+}
+
+.signin-content {
+  padding: 60px 1rem;
+}
+
+.signin-content {
+  padding: 60px 1rem;
+  height: 85.4vh;
+  background-image: url('../../assets/images/Slide1Payers.jpg');
+  background-color: #f8f8f8;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.signin-content:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.full-width-input {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.signin-content .mat-form-field-underline {
+  border-bottom: 1px solid#ddd;
+  transform: perspective(1px);
+}
+
+.loginbtn {
+  margin-top: 50px;
+}

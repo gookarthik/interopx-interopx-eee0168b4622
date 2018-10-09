@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Patient Detailed View</h1>
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+  <div class="detailedView">
+    <mat-card>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header [expandedHeight]="'48px'">
+            <mat-panel-title>
+              Allergy Intolerance
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="tableView">
+            <app-table [options]="allergyTableOptions"></app-table>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header [expandedHeight]="'48px'">
+            <mat-panel-title>
+              Condition
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="tableView">
+            <app-table [options]="conditionTableOptions"></app-table>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header [expandedHeight]="'48px'">
+            <mat-panel-title>
+              Medication Statement
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="tableView">
+            <app-table [options]="medicationTableOptions"></app-table>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header [expandedHeight]="'48px'">
+            <mat-panel-title>
+              Observation
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="tableView">
+            <app-table [options]="observationTableOptions"></app-table>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card>
+  </div>
+</div>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close color="primary">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-title color="primary">
+    <div class="content-header">
+      <h1>Dashboard</h1>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <div class="flex-container">
+    <div>No of Data Sources
+      <p style="font-size:32px">200</p>
+    </div>
+    <div>
+      No of Patients
+      <p style="font-size:32px">1200</p>
+    </div>
+    <div>
+      No of Records Extracted
+      <p style="font-size:32px">200</p>
+    </div>
+    <div>
+      No of Records Extracted last Week
+      <p style="font-size:32px">2000</p>
+    </div>
+    <div>
+      No of Data Sets
+      <p style="font-size:32px">100</p>
+    </div>
+  </div>
+  <div class="flex-container1">
+    <div>Users Accessing Data
+      <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [chartType]="lineChartType"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div>%age of Data Cleanup
+      <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  <div class="apptable">
+    <app-table [options]="tableOptions" (action)="getrepositoryDetails($event);"></app-table>
+  </div>
+</mat-card>

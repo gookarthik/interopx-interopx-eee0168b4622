@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Patient Detailed View</h1>
+<div mat-dialog-content>
+    <mat-divider></mat-divider>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Demographics
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-table [options]="tableOptions"></app-table>
+        </mat-expansion-panel>
+        <!--<mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Allergy Intolerance
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-table [options]="allergyOptions"></app-table>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Condition
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-table [options]="ConditionOptions"></app-table>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    MedicationStatement
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-table [options]="medstmtOptions"></app-table>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Observation
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-table [options]="observOptions"></app-table>
+        </mat-expansion-panel>-->
+    </mat-accordion>
+    <!-- <button mat-raised-button color="primary" class="saveButton" [mat-dialog-close]="true" (click)="close()">close</button>-->
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>close</button>
+    <!-- <button mat-raised-button color="primary" [mat-dialog-close]="true">OK</button>-->
+</mat-dialog-actions>

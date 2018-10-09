@@ -1,0 +1,33 @@
+@import 'variables';
+.mat-list-item.active {
+  background: $menu-list-active;
+  color: $menu-list-active-text;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12)
+}
+
+.mat-list-item {
+  color: $primary-blue;
+}
+
+.routeIcon {
+  margin-right: 8px;
+}
+
+.faIcon {
+  margin: 0px 4px;
+  height: 24px;
+  width: 24px;
+  font-size: 20px;
+}
+
+.indicator {
+  flex: 1 1 1e-09px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+}
+
+.indicator-flex {
+  flex: 1 1 1e-09px;
+  box-sizing: border-box;
+}

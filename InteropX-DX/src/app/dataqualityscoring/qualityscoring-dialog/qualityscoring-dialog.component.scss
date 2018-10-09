@@ -1,0 +1,115 @@
+@import 'variables';
+.mat-dialog-title {
+  color: $primary-blue;
+  font-size: 22px;
+  text-align: center;
+}
+
+.mat-dialog-content {
+  padding: 0px;
+}
+.extractiondetails{
+   // width: 190px;
+   // padding-left: 195px;
+    font-size: 15px;
+}
+.extractiondetails span{
+    padding-right: 25px;
+    padding-left: 25px;
+}
+.overallgrade{
+    // width: 190px;
+     //padding-left: 195px;
+     font-size: 15px;
+ }
+ .overallgrade span{
+     padding-right: 25px;
+     padding-left: 25px;
+ }
+
+ .apptable {
+    margin-top: 15px;
+    margin-left: 19px;
+    width:96%;
+  }
+  
+  .table-bordered {
+    border: 0px;
+  }
+  
+  .table-bordered .mat-header-row,
+  .table-bordered .mat-row {
+  
+    //display: flex;
+    border-bottom-width: 0px;
+    border-bottom-style: solid;
+    align-items: unset;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: unset;
+    min-height: 40px;
+  }
+  
+  .table-bordered>.mat-header-row>.mat-header-cell {
+    border: 1px solid #ddd;
+    line-height: 1.42856;
+    border-right-width: 0;
+    padding: 8px 10px;
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  .table-bordered>.mat-header-row>.mat-header-cell:last-child {
+    border-right-width: 1px;
+  }
+  
+  .table-bordered>.mat-row>.mat-cell {
+    border: 1px solid #ddd;
+    border-bottom-width: 0px;
+    line-height: 1.42856;
+    padding: 0px 10px;
+    word-break: break-all;
+  }
+  .table-bordered>.mat-row>.mat-cell  > a{
+    color: blue;
+    text-decoration: underline;
+  }
+  
+  .table-bordered>.mat-row>.mat-cell:not(:last-child) {
+    border-right-width: 0px;
+  }
+  
+  .table-bordered>.mat-row:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .mat-header-cell>.mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .mat-header-cell .mat-sort-header-container .mat-sort-header-arrow {
+    margin: 5px;
+  }
+  .table-bordered .mat-row:hover{
+    cursor: pointer;
+  }
+  h3{
+    font-size: 15px;
+    text-align: center;
+    color: $primary-blue;
+  }
+  .expansion-container{
+    width:96%;
+    margin-left: 19px;
+    margin-bottom: 29px;
+  }
+  .mat-tab-group{
+    margin-top: -15px;
+  }
+.display>a{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }

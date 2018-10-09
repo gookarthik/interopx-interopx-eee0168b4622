@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Patient Detailed View</h1>
+<div mat-dialog-content>
+    <!--  <mat-divider></mat-divider>-->
+    <mat-tab-group>
+        <mat-tab label="Tabular View">
+            <app-table [options]="tableOptions"></app-table>
+        </mat-tab>
+        <mat-tab label="JSON View">
+            <pre>{{jsonview| json}}</pre> </mat-tab>
+
+    </mat-tab-group>
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>close</button>
+    <!-- <button mat-raised-button color="primary" [mat-dialog-close]="true">OK</button>-->
+</mat-dialog-actions>

@@ -1,0 +1,43 @@
+@import 'variables';
+.mat-dialog-title {
+  font-size: 30px;
+  color: $primary-blue;
+  font-weight: 300;
+}
+
+.mat-dialog-content {
+  padding: 0px;
+}
+
+.dataSetForm {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.dataSetForm .mat-form-field {
+  margin: 5px 0;
+  width: 100%
+}
+
+.mat-expansion-panel {
+  border: 1px solid #ddd;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+::ng-deep .mat-expansion-panel-body>* {
+  margin: 5px 0;
+  width: 100%;
+}
+
+.saveButton {
+  margin: 30px 0px 10px 0px;
+  float: right;
+}
+.alert{
+  color: $warning-red;
+}

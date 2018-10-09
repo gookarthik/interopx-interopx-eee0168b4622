@@ -1,0 +1,15 @@
+<app-header></app-header>
+
+<div class="sidebar">
+  <mat-sidenav-container autosize class="example-container">
+    <mat-sidenav class="example-sidenav main-content" #sideNav mode="side" [fixedInViewport]="isLoggedIn$" fixedTopGap="0"
+      fixedBottomGap="40" opened="true" *ngIf="isLoggedIn$ | async">
+      <app-navbar></app-navbar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<app-footer></app-footer>
+<simple-notifications [options]="notificationOptions"></simple-notifications>

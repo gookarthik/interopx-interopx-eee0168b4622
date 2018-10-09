@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-title color="primary">
+    <div class="content-header">
+      <h1>Data Source List</h1>
+      <button color="primary" mat-raised-button (click)="createDataSource();">Create Data Source</button>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <div class="apptable">
+    <app-table [options]="tableOptions" (action)="getActionDetails($event);"></app-table>
+  </div>
+</mat-card>
+<app-loading [isLoading]="isLoadingResults"></app-loading>

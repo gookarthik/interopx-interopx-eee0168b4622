@@ -1,0 +1,12 @@
+@import 'variables';
+.content-header > h1 {
+    color: $primary-blue;
+    flex-grow: 8;
+  }
+.apptable {
+    margin-top: 45px;
+  }
+.content-header {
+    display: flex;
+    flex-direction: row;
+  }

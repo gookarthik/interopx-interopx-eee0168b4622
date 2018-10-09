@@ -1,0 +1,18 @@
+@import 'variables';
+.footer {
+  width: 100%;
+  background: $header-background;
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+}
+
+.footer-info {
+  color: #fff;
+  text-align: center;
+}
+
+.footer-info a {
+  color: #fff;
+  text-decoration: none;
+}

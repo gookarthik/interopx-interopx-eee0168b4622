@@ -1,0 +1,45 @@
+@import 'variables';
+.mat-card-title h1 {
+  color: $primary-blue;
+}
+
+.mat-card-content {
+  padding: 20px 0px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.mat-radio-button {
+  margin-right: 20px;
+}
+
+.mat-raised-button {
+  margin: 0px 20px;
+}
+
+.success-button {
+  background-color: $color-bright-green;
+  color: $color-white;
+}
+
+.warning-button {
+  color: $color-white;
+}
+
+.error-button {
+  background-color: $warning-red;
+  color: $color-white;
+}
+
+.info-button {
+  background-color: $primary-blue;
+  color: $color-white;
+}

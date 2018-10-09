@@ -1,0 +1,46 @@
+@import 'variables';
+.mat-dialog-title {
+  color: $primary-blue;
+  font-size: 22px;
+}
+
+.mat-dialog-content {
+  padding: 0px;
+}
+
+.datasourcetypeform {
+  padding: 24px 24px 0px 24px;
+}
+
+.datasourcetypeform .mat-form-field {
+  margin: 5px 0;
+  width: 100%
+}
+
+.datasource-form {
+  padding: 0px 24px 0px 24px;
+}
+
+.datasource-form .mat-form-field {
+  width: 100%
+}
+
+.upload-container {
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.upload-container input[type=file] {
+  display: none;
+}
+
+.upload-container .mat-raised-button {
+  margin-left: 15px;
+}
+
+.saveButton {
+  float: right;
+}
+.alert{
+  color: $warning-red;
+}

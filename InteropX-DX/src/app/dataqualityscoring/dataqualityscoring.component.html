@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>Data Quality Scoring</h1>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-radio-group class="example-radio-group">
+        <mat-radio-button value="byextractions" (change)="optionselect($event)">By Extractions</mat-radio-button>
+        <mat-radio-button value="bydatasource" (change)="optionselect($event)">By Datasource </mat-radio-button>
+    </mat-radio-group>
+    <div class="exapptable" *ngIf="extrcationTable">
+        <app-table [options]="tableOptions" (action)="getdataqualityscore($event)"></app-table>
+    </div>
+    <div class="dsapptable" *ngIf="datasourceTable">
+        <app-table [options]="dstableOptions" (action)="getdsdataqualityscore($event)"></app-table>
+    </div>
+
+</mat-card>

@@ -1,0 +1,33 @@
+@import 'variables';
+.content-header h1 {
+  color: $primary-blue;
+  flex-grow: 8;
+}
+
+.content-header button {
+  flex-grow: 2;
+  align-self: center;
+}
+
+.content-header,
+.dataset-details {
+  display: flex;
+  flex-direction: row;
+}
+
+.mat-card-content {
+  padding-top: 30px;
+}
+
+.datasources {
+  flex-grow: 1;
+}
+
+.patients {
+  flex-grow: 9;
+  padding-left: 20px;
+}
+
+.mat-card {
+  min-height: calc(100% - 50px);
+}

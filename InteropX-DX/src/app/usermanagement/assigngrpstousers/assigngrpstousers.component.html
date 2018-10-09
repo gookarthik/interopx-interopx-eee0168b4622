@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Add Groups To User</h1>
+<div mat-dialog-content>
+    <div class="actions">
+        <!--<button mat-raised-button color="primary" (click)="assigngrpstouser()">Add to Group</button>
+        <button mat-raised-button color="primary" [disabled]="!selection.selected.length">Remove the Group</button>-->
+    </div>
+    <mat-form-field class="example-full-width">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type here to Filter List">
+    </mat-form-field>
+    <!--<mat-card>-->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="grpname">
+            <mat-header-cell *matHeaderCellDef> Group Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.grpname}} </mat-cell>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="createdUname">
+            <mat-header-cell *matHeaderCellDef> Created User Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.createdUname}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
+    </table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" class="mat-elevation-z4">
+    </mat-paginator>
+    <!--</mat-card>-->
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onclose()">close</button>
+    <button mat-raised-button color="primary" [disabled]="!selection.selected.length" (click)="onsave()">Save</button>
+</mat-dialog-actions>

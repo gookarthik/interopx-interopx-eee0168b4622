@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1w8ohs4" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.16.2">
+  <bpmn:process id="extraction_workflow" name="ExractionWorkflow" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1x755cp</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1x755cp" sourceRef="StartEvent_1" targetRef="CallActivity_138i5jj" />
+    <bpmn:callActivity id="Task_1nqx2vo" name="DataQuality" calledElement="data_pipeline_call">
+      <bpmn:extensionElements>
+        <camunda:in sourceExpression="http://localhost/ix-data-quality-scorer/data-quality/?etId=&#60;dataSetId&#62;" target="serviceUri" />
+        <camunda:in sourceExpression="select exists(select * from patient pa join extraction e on pa.extraction_id = e.extraction_id where e.dataset_id = ?1 and pa.data_processing_status -&#62;&#62; &#39;qualityStatus&#39;=&#39;false&#39;)" target="processCompleteQuery" />
+        <camunda:in source="dataSetId" target="dataSetId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0kri7e8</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1jowlii</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="EndEvent_1kkpx8v">
+      <bpmn:incoming>SequenceFlow_0sa9ivr</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1jowlii" sourceRef="Task_1nqx2vo" targetRef="CallActivity_1cp9dlg" />
+    <bpmn:callActivity id="CallActivity_138i5jj" name="DataTransformation" calledElement="data_pipeline_call">
+      <bpmn:extensionElements>
+        <camunda:in sourceExpression="http://localhost/ix-data-transformation/transformation/&#60;dataSetId&#62;" target="serviceUri" />
+        <camunda:in sourceExpression="select exists(select * from patient pa join extraction e on pa.extraction_id = e.extraction_id where e.dataset_id = ?1 and pa.data_processing_status -&#62;&#62; &#39;transformationStatus&#39;=&#39;false&#39;)" target="processCompleteQuery" />
+        <camunda:in source="dataSetId" target="dataSetId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1x755cp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0kri7e8</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="SequenceFlow_0kri7e8" sourceRef="CallActivity_138i5jj" targetRef="Task_1nqx2vo" />
+    <bpmn:callActivity id="CallActivity_1cp9dlg" name="PatientMatching" calledElement="data_pipeline_call">
+      <bpmn:extensionElements>
+        <camunda:in sourceExpression="http://localhost/ix-data-matching/data-matching/?etId=&#60;dataSetId&#62;" target="serviceUri" />
+        <camunda:in sourceExpression="select exists(select * from patient pa join extraction e on pa.extraction_id = e.extraction_id where e.dataset_id = ?1 and pa.data_processing_status -&#62;&#62; &#39;idMatchingStatus&#39;=&#39;false&#39;)" target="processCompleteQuery" />
+        <camunda:in source="dataSetId" target="dataSetId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1jowlii</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0zh7h5v</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="SequenceFlow_0zh7h5v" sourceRef="CallActivity_1cp9dlg" targetRef="CallActivity_0a58uz1" />
+    <bpmn:callActivity id="CallActivity_0a58uz1" name="DeDuplication" calledElement="data_pipeline_call">
+      <bpmn:extensionElements>
+        <camunda:in sourceExpression="http://localhost/ix-data-deduplication/data-deduplication/?etId=&#60;dataSetId&#62;" target="serviceUri" />
+        <camunda:in sourceExpression="select exists(select * from patient pa join extraction e on pa.extraction_id = e.extraction_id where e.dataset_id = ?1 and pa.data_processing_status -&#62;&#62; &#39;deDuplicationStatus&#39;=&#39;false&#39;)" target="processCompleteQuery" />
+        <camunda:in source="dataSetId" target="dataSetId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0zh7h5v</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0sa9ivr</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="SequenceFlow_0sa9ivr" sourceRef="CallActivity_0a58uz1" targetRef="EndEvent_1kkpx8v" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="extraction_workflow">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1x755cp_di" bpmnElement="SequenceFlow_1x755cp">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="255" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="CallActivity_0mv7vnp_di" bpmnElement="Task_1nqx2vo">
+        <dc:Bounds x="403" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1kkpx8v_di" bpmnElement="EndEvent_1kkpx8v">
+        <dc:Bounds x="845" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1jowlii_di" bpmnElement="SequenceFlow_1jowlii">
+        <di:waypoint x="503" y="120" />
+        <di:waypoint x="545" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="CallActivity_138i5jj_di" bpmnElement="CallActivity_138i5jj">
+        <dc:Bounds x="255" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0kri7e8_di" bpmnElement="SequenceFlow_0kri7e8">
+        <di:waypoint x="355" y="120" />
+        <di:waypoint x="403" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="CallActivity_1cp9dlg_di" bpmnElement="CallActivity_1cp9dlg">
+        <dc:Bounds x="545" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0zh7h5v_di" bpmnElement="SequenceFlow_0zh7h5v">
+        <di:waypoint x="645" y="120" />
+        <di:waypoint x="675" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="CallActivity_0a58uz1_di" bpmnElement="CallActivity_0a58uz1">
+        <dc:Bounds x="675" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0sa9ivr_di" bpmnElement="SequenceFlow_0sa9ivr">
+        <di:waypoint x="775" y="120" />
+        <di:waypoint x="845" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

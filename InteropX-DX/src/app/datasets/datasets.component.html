@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-title color="primary">
+    <div class="content-header">
+      <h1>Select Data Sources and Create DataSet</h1>
+      <button color="primary" mat-raised-button (click)="createDataSet();">Create DataSet</button>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <app-table [options]="tableOptions" (action)=" getSelectionDetails($event)"></app-table>
+  </mat-card-content>
+</mat-card>

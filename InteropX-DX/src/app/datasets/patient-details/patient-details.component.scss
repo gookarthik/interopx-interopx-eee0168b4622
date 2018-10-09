@@ -1,0 +1,18 @@
+@import 'variables';
+.mat-dialog-title {
+  font-size: 30px;
+  color: $primary-blue;
+  font-weight: 300;
+}
+
+.mat-dialog-content {
+  padding: 0px;
+}
+
+.mat-accordion .mat-expanded .mat-expansion-panel-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.tableView {
+  padding-top: 16px;
+}

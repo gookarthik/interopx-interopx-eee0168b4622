@@ -1,0 +1,1281 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.5
+-- Dumped by pg_dump version 9.5.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: allergy_intolerance; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE allergy_intolerance (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    allergy_type character varying(50),
+    allergy_code character varying(50),
+    codesystem character varying(50),
+    allergy_description character varying(100),
+    allergy_start_date character varying(50),
+    allergy_stopped_date character varying(50),
+    allergy_create_timestamp character varying(50),
+    status character varying(100),
+    allergy_reaction character varying(100),
+    allergy_severity character varying(100)
+);
+
+
+ALTER TABLE allergy_intolerance OWNER TO postgres;
+
+--
+-- Name: encounter; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE encounter (
+    tencounterid integer NOT NULL,
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    providerid character varying(50),
+    provfullname character varying(50),
+    starttime character varying(50),
+    endtime character varying(50),
+    encounter_code character varying(50),
+    encountercode_codesystem character varying(50),
+    encountercode_displayname character varying(50),
+    enc_location_id character varying(100)
+);
+
+
+ALTER TABLE encounter OWNER TO postgres;
+
+--
+-- Name: immunization; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE immunization (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    immcode character varying(50),
+    codesystem character varying(50),
+    description character varying(50),
+    completed_date character varying(50),
+    imm_site character varying(50),
+    lot_number integer,
+    manufacturer character varying(100),
+    status character varying(50),
+    notes character varying(100)
+);
+
+
+ALTER TABLE immunization OWNER TO postgres;
+
+--
+-- Name: labresults; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE labresults (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    test_panel character varying(50),
+    test_panel_system character varying(50),
+    test_panel_name character varying(50),
+    lab_type character varying(50),
+    labresult_codesystem character varying(50),
+    original_name character varying(50),
+    collection_date character varying(50),
+    result_type character varying(50),
+    result_value character varying(50),
+    result_units character varying(50),
+    result_min character varying(50),
+    result_max character varying(50),
+    ref_range character varying(50)
+);
+
+
+ALTER TABLE labresults OWNER TO postgres;
+
+--
+-- Name: location; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE location (
+    location_id character varying(50) NOT NULL,
+    loctype character varying(100),
+    location_display_name character varying(100),
+    location_address_1 character varying(100),
+    location_city character varying(50),
+    location_state character varying(50),
+    phone character varying(12)
+);
+
+
+ALTER TABLE location OWNER TO postgres;
+
+--
+-- Name: medication; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE medication (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    type character varying(50),
+    status character varying(50),
+    code character varying(50),
+    codesystem character varying(50),
+    medication_name character varying(250),
+    prescription_date character varying(50),
+    stop_date character varying(50),
+    frequency character varying(250),
+    dosage character varying(50),
+    productform character varying(50),
+    routecode character varying(50)
+);
+
+
+ALTER TABLE medication OWNER TO postgres;
+
+--
+-- Name: patient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE patient (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    haoid character varying(100),
+    firstname character varying(50),
+    lastname character varying(50),
+    middleinitial character varying(50),
+    dateofbirth character varying(50),
+    language character varying(50),
+    racecode character varying(50),
+    ethnicitycode character varying(50),
+    admingender character varying(50),
+    aliveindicator character varying(50),
+    deceaseddatetime character varying(50),
+    streetaddress character varying(50),
+    city character varying(50),
+    state character varying(50),
+    zip character varying(50),
+    telecom character varying(50),
+    site_oid character varying(50),
+    patidextension character varying(50)
+);
+
+
+ALTER TABLE patient OWNER TO postgres;
+
+--
+-- Name: problem; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE problem (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    problemcategory character varying(50),
+    problemcode character varying(50),
+    codesystem character varying(50),
+    problem_description text,
+    onset_date character varying(50),
+    resolved_date character varying(50),
+    create_timestamp character varying(50),
+    problem_status character varying(50)
+);
+
+
+ALTER TABLE problem OWNER TO postgres;
+
+--
+-- Name: procedure; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE procedure (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    cc_cpt_code character varying(50),
+    codesystem character varying(50),
+    description character varying(100),
+    cc_date_of_service character varying(50),
+    tencounterid character varying(25) NOT NULL,
+    targetsitecode character varying(50)
+);
+
+
+ALTER TABLE procedure OWNER TO postgres;
+
+--
+-- Name: smoking; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE smoking (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    smoking_status_code character varying(50),
+    smoking_status_code_code_system character varying(50),
+    smoking_status_display_name character varying(50),
+    start_time character varying(50),
+    end_date character varying(50)
+);
+
+
+ALTER TABLE smoking OWNER TO postgres;
+
+--
+-- Name: vitals; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE vitals (
+    patientid character varying(25) NOT NULL,
+    encid character varying(100),
+    vitalcode character varying(50),
+    codesystem character varying(50),
+    description character varying(100),
+    vitals_date character varying(50),
+    vitals character varying(50),
+    units character varying(50)
+);
+
+
+ALTER TABLE vitals OWNER TO postgres;
+
+--
+-- Data for Name: allergy_intolerance; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY allergy_intolerance (patientid, encid, allergy_type, allergy_code, codesystem, allergy_description, allergy_start_date, allergy_stopped_date, allergy_create_timestamp, status, allergy_reaction, allergy_severity) FROM stdin;
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	Allergy	716186003	SNOMED-CT	NO KNOWN ALLERGIES	\N	\N	8/20/2014	Active	716186003	716186003
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Allergy	716186003	SNOMED-CT	NO KNOWN ALLERGIES	\N	\N	8/20/2014	Active	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Allergy	716186003	SNOMED-CT	NO KNOWN ALLERGIES	\N	\N	8/20/2014	Active	\N	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	NON-DRUG	409137002	SNOMED-CT	No Known Drug Allergies	2/12/2010	\N	2/12/2010	Active	\N	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	DRUG	\N	CUSTOM	Gabapentin *ANTICONVULSANTS*	10/24/2016	\N	10/24/2016	Active	\N	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	NON-DRUG	\N	CUSTOM	Allergies Reconciled	1/20/2017	\N	1/20/2017	Active	\N	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	NON-DRUG	\N	CUSTOM	Penicillins	5/2/2012	\N	5/2/2012	Active	\N	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	DRUG	\N	CUSTOM	Latex Gloves *MEDICAL DEVICES*	3/3/2011	\N	3/3/2011	Active	\N	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	NON-DRUG	\N	CUSTOM	Allergies Reconciled	12/20/2016	\N	12/20/2016	Active	\N	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	NON-DRUG	\N	CUSTOM	Milk	12/13/2010	\N	12/13/2010	Active	716186003	716186003
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	DRUG	\N	CUSTOM	Novocain *LOCAL ANESTHETICS-Parenteral*	3/3/2011	\N	3/3/2011	Active	\N	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	NON-DRUG	409137002	SNOMED-CT	No Known Drug Allergies	7/28/2009	\N	7/28/2009	Active	\N	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	DRUG	\N	CUSTOM	OxyCODONE HCl *ANALGESICS - OPIOID*	11/21/2016	\N	11/21/2016	Active	\N	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	NON-DRUG	\N	CUSTOM	SULFA	5/20/2010	\N	5/20/2010	Active	\N	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	NON-DRUG	\N	CUSTOM	Allergies Reconciled	11/30/2016	\N	11/30/2016	Active	\N	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	NON-DRUG	409137002	SNOMED-CT	No Known Drug Allergies	1/26/2010	\N	1/26/2010	Active	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Allergy	716186003	SNOMED-CT	NO KNOWN ALLERGIES	\N	\N	2/4/2015	Active	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Allergy	\N	CUSTOM	IODINE	\N	\N	5/28/2010	Active	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Allergy	\N	CUSTOM	PENICILLINS	\N	\N	5/28/2010	Active	\N	\N
+\.
+
+
+--
+-- Data for Name: encounter; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY encounter (tencounterid, patientid, encid, providerid, provfullname, starttime, endtime, encounter_code, encountercode_codesystem, encountercode_displayname, enc_location_id) FROM stdin;
+14234126	100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	7a924d22-6471-4bd1-b72b-1415b38781dd	Nurse, TCCH	2015-09-14	2015-09-14	\N	CUSTOM	\N	0c79dea1-06c2-4a8b-9336-eae2afd6a7a9
+74324342	100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	415fa3a1-97cd-4982-a70b-06add3158cfb	Flores, Sergio	2017-02-27	2017-02-27	OfficeVisit	CUSTOM	Office Visit	0c79dea1-06c2-4a8b-9336-eae2afd6a7a9
+89282032	100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	2e953ac8-4e55-486c-84f8-f7e875715d0c	Mascal, Srinivas	2017-02-23	2017-02-23	OfficeVisit	CUSTOM	Office Visit	0c79dea1-06c2-4a8b-9336-eae2afd6a7a9
+89234023	100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	9e7a15de-d8a9-47f3-8bf5-3a8bf0065549	Davidson ARNP, Natalie	2016-08-25	2016-08-25	MedicarePPSEstPatient	CUSTOM	Medicare PPS Est Patient	2ad75d23-09bc-46a0-9e61-d6d5dc5a31dc
+98329392	100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	9e7a15de-d8a9-47f3-8bf5-3a8bf0065549	Davidson ARNP, Natalie	2016-09-12	2016-09-12	MedicarePPSEstPatient	CUSTOM	Medicare PPS Est Patient	2ad75d23-09bc-46a0-9e61-d6d5dc5a31dc
+63545597	100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	9e7a15de-d8a9-47f3-8bf5-3a8bf0065549	Davidson ARNP, Natalie	2017-01-31	2017-01-31	MedicarePPSEstPatient	CUSTOM	Medicare PPS Est Patient	2ad75d23-09bc-46a0-9e61-d6d5dc5a31dc
+53657292	100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	9e7a15de-d8a9-47f3-8bf5-3a8bf0065549	Davidson ARNP, Natalie	2016-08-18	2016-08-18	MedicarePPSEstPatient	CUSTOM	Medicare PPS Est Patient	2ad75d23-09bc-46a0-9e61-d6d5dc5a31dc
+75765540	100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	da335775-9cbe-43e0-8d61-8522302c96e0	Witte, Kelly	2017-02-09	2017-02-09	OfficeVisit	CUSTOM	Office Visit	c4f9be94-db10-4b99-85d8-79ebfcb30049
+13537494	100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	27ba6a79-3ab9-4a84-8fef-f8f2344d00da	Hershey, Jeffrey	2017-02-28	2017-02-28	OfficeVisit	CUSTOM	Office Visit	a404272b-6cb4-45a0-ac3f-b7e124e74011
+64538748	100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	f7c48b9e-f8ec-4b7c-b0a0-2e11db4c0348	Zugec, Maja	2017-03-08	2017-03-08	OfficeVisit	CUSTOM	Office Visit	a404272b-6cb4-45a0-ac3f-b7e124e74011
+54378926	100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	27ba6a79-3ab9-4a84-8fef-f8f2344d00da	Hershey, Jeffrey	2017-02-02	2017-02-02	OfficeVisit	CUSTOM	Office Visit	a404272b-6cb4-45a0-ac3f-b7e124e74011
+65829494	100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	f7c48b9e-f8ec-4b7c-b0a0-2e11db4c0348	Zugec, Maja	2017-02-21	2017-02-21	OfficeVisit	CUSTOM	Office Visit	a404272b-6cb4-45a0-ac3f-b7e124e74011
+64352628	100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	6d99107c-acfe-4a86-a6af-bf8f82f7b453	Wagoner, Shirley	2017-02-20	2017-02-20	OfficeVisit	CUSTOM	Office Visit	a404272b-6cb4-45a0-ac3f-b7e124e74011
+98765432	100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	5a218e34-96c0-43d1-84d4-3910cf25a9db	Valencia, Saul	2017-02-07	2017-02-07	OfficeVisit	CUSTOM	Office Visit	0c79dea1-06c2-4a8b-9336-eae2afd6a7a9
+98765432	100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	aa765e09-e0ad-4c4c-b0bb-2b73d2ee8295	Little DO, David	2017-03-06	2017-03-06	PatientCommunication	CUSTOM	Patient Communication	c8f97a25-63dc-44df-bd5a-b0b6f719bb59
+\.
+
+
+--
+-- Data for Name: immunization; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY immunization (patientid, encid, immcode, codesystem, description, completed_date, imm_site, lot_number, manufacturer, status, notes) FROM stdin;
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	140	CVX	flu	2015-09-14	RightDeltoid	157002	Novartis Pharmaceutical Corporation	Administered	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	MCV	Custom	MCV	2016-09-12	\N	\N	\N	Administered	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	NeedsUpdate	Custom	\N	2016-09-12	\N	\N	\N	Administered	\N
+\.
+
+
+--
+-- Data for Name: labresults; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY labresults (patientid, encid, test_panel, test_panel_system, test_panel_name, lab_type, labresult_codesystem, original_name, collection_date, result_type, result_value, result_units, result_min, result_max, ref_range) FROM stdin;
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	\N	\N	\N	hdl	Custom	HDL CHOLESTEROL	2017-02-07	PQ	40	mg/dL	40	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	\N	\N	\N	TotalCholesterol	Custom	CHOLESTEROL	2017-02-07	PQ	153	mg/dL	\N	200	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	\N	\N	\N	Triglycerides	Custom	TRIGLYCERIDES	2017-02-07	PQ	175	mg/dL	\N	150	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	A1C	Custom	Hemoglobin A1c	2017-03-06	PQ	10.7	%	4.0	6.0	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	hdl	Custom	HDL	2017-03-06	PQ	47	mg/dL	40	59	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	LDL	Custom	Direct LDL	2017-03-06	PQ	75	mg/dL	\N	100	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	lipidpanel	Custom	Chol/HDL Ratio	2017-03-06	PQ	3.1	Ratio	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	Microalbumin	Custom	Microalb/Creat Ratio, Urine	2017-03-06	PQ	542	mg/g	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	Microalbumin	Custom	Microalbumin Screen mg/dL	2017-03-06	PQ	17.9	mg/dL	0.0	15.0	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	totalcholesterol	Custom	Cholesterol	2017-03-06	PQ	144	mg/dL	\N	200	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	\N	\N	\N	triglycerides	Custom	Triglycerides	2017-03-06	PQ	66	mg/dL	\N	150	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	\N	\N	\N	HDL	Custom	HDL	2017-02-02	PQ	46	mg/dL	>39	>39	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	\N	\N	\N	LDL	Custom	LDL [Calculated]	2017-02-02	PQ	122	mg/dL	<100	<100	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	\N	\N	\N	totalcholesterol	Custom	Cholesterol	2017-02-02	PQ	200	mg/dL	<200	<200	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	\N	\N	\N	Triglycerides	Custom	Triglycerides	2017-02-02	PQ	160	mg/dL	<150	<150	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	\N	\N	\N	A1c	Custom	HEMOGLOBIN GLYCLATED (HGB A1C)	2017-02-21	PQ	6.4	%	4.0 - 6.0	4.0 - 6.0	\N
+\.
+
+
+--
+-- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY location (location_id, loctype, location_display_name, location_address_1, location_city, location_state, phone) FROM stdin;
+85d23e73-4f88-4139-be62-122d87f962f1	\N	Peninsula Community Health Services Athena - Unknown Location	\N	\N	\N	\N
+b0bd99b3-efe5-4226-a243-2e28b5af5d64	\N	Valley View	\N	\N	\N	\N
+6ac91977-0c28-4c17-9914-6715e95a5556	\N	Valley View - Unknown Location	\N	\N	\N	\N
+b8c00354-cf40-48bd-91d4-71df64361391	\N	Tri Cities - Unknown Location	\N	\N	\N	\N
+048cd853-d4fc-4ec0-a679-8b5541ff50f7	\N	Unity Care NW	\N	\N	\N	\N
+a404272b-6cb4-45a0-ac3f-b7e124e74011	\N	NEWHP - Unknown Location	\N	\N	\N	\N
+09b5b0cc-d715-40ce-976b-baf4feec6a46	\N	Peninsula Community Health Services Athena	\N	\N	\N	\N
+7c5284cd-9662-499a-98c2-cb0d28c22d7d	\N	Tri Cities	\N	\N	\N	\N
+2ad75d23-09bc-46a0-9e61-d6d5dc5a31dc	\N	Interfaith - Unknown Location	\N	\N	\N	\N
+f4d8e23b-6762-4b04-b6cf-e0d6936ff715	\N	NEWHP	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: medication; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY medication (patientid, encid, type, status, code, codesystem, medication_name, prescription_date, stop_date, frequency, dosage, productform, routecode) FROM stdin;
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	Statement	CANCELLED	00904585440	NDC	ibuprofen 600 mg tablet	2015-08-05	2016-03-14	\N	\N	\N	\N
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	Statement	CANCELLED	00450049660	NDC	Tylenol	2016-03-14	2016-05-26	\N	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	00093014901	NDC	naproxen 500 mg tablet	2017-02-27	\N	take 1 tablet by oral route 2 times every day with food	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	00168013315	NDC	clotrimazole 1 % topical cream	2016-05-26	\N	apply by topical route 2 times every day to the affected and surrounding areas of skin in the morning and evening	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	00904585440	NDC	ibuprofen 600 mg tablet	2016-05-26	\N	take 1 tablet by oral route 3 times every day with food	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	11523716201	NDC	Claritin-D 12 Hour 5 mg-120 mg tablet,extended release	2017-02-27	\N	take 1 tablet by oral route  every 12 hours	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	11917003688	NDC	Artificial Tears eye drops	2016-05-26	\N	apply 1 eye drop 4 times per day prn	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	63824026166	NDC	Mucinex Sinus-Max Sev Congestion 10 mg-650 mg-400 mg/20 mL oral liquid	2017-02-23	\N	15 to 20 ml by mouth three times daily for 1 week	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	00173045301	NDC	Flonase 50 mcg/actuation nasal spray,suspension	2016-05-26	\N	spray 1 spray by intranasal route  every day in each nostril	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	00603085558	NDC	Q-Tussin DM 10 mg-100 mg/5 mL syrup	2017-02-27	\N	take 10 milliliter by oral route  every 6 hours as needed	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	50428925507	NDC	Allergy Relief (cetirizine) 10 mg capsule	2016-05-26	\N	take 1 by Oral route once per day	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	10135014401	NDC	acetaminophen 500 mg tablet	2017-02-23	\N	take 1 tablet by oral route  every 6 hours as needed	\N	\N	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Statement	Active	17478071710	NDC	ketotifen 0.025 % (0.035 %) eye drops	2017-02-27	\N	instill 1 drop by ophthalmic route 2 times every day into affected eye(s)	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	00168013315	NDC	clotrimazole 1 % topical cream	2016-05-26	\N	apply by topical route 2 times every day to the affected and surrounding areas of skin in the morning and evening	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	00173045301	NDC	Flonase 50 mcg/actuation nasal spray,suspension	2016-05-26	\N	spray 1 spray by intranasal route  every day in each nostril	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	11917003688	NDC	Artificial Tears eye drops	2016-05-26	\N	apply 1 eye drop 4 times per day prn	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	CANCELLED	17478071710	NDC	ketotifen 0.025 % (0.035 %) eye drops	2016-05-26	2017-02-27	instill 1 drop by ophthalmic route 2 times every day into affected eye(s)	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	50428925507	NDC	Allergy Relief (cetirizine) 10 mg capsule	2016-05-26	\N	take 1 by Oral route once per day	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	00904585440	NDC	ibuprofen 600 mg tablet	2016-05-26	\N	take 1 tablet by oral route 3 times every day with food	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	63824026166	NDC	Mucinex Sinus-Max Sev Congestion 10 mg-650 mg-400 mg/20 mL oral liquid	2017-02-23	\N	15 to 20 ml by mouth three times daily for 1 week	\N	\N	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Statement	Active	10135014401	NDC	acetaminophen 500 mg tablet	2017-02-23	\N	take 1 tablet by oral route  every 6 hours as needed	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	\N	CUSTOM	LITHIUM CARBONATE 150 MG TBCR (LITHIUM CARBONATE)	2015-09-15	2017-04-04	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	51079018020	NDC	LITHIUM CARBONATE 300 MG TBCR	2015-09-15	2017-03-20	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	58487002373	NDC	VITAMIN D3 1000 UNIT  TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	00603576321	NDC	SPIRONOLACTONE 25 MG TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2007-08-30	2017-03-19	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	54569036901	NDC	LITHIUM CARBONATE 300 MG CAPS	2015-09-15	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	68180051409	NDC	LISINOPRIL 10 MG TABS	2014-10-20	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	00228202750	NDC	ALPRAZOLAM 0.25 MG TABS	2016-04-21	2016-11-20	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2012-03-29	2017-03-19	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	60432056160	NDC	TRIAMCINOLONE ACETONIDE 0.1 % LOTN	2012-09-13	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	74312001530	NDC	ASCORBIC ACID 250 MG ORAL TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	10135017336	NDC	ASPIRIN EC 81 MG TBEC	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	51079093120	NDC	CARVEDILOL 12.5 MG TABS	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Statement	CANCELLED	68382006816	NDC	SIMVASTATIN 40 MG TABS	2013-07-15	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	\N	CUSTOM	LITHIUM CARBONATE 150 MG TBCR (LITHIUM CARBONATE)	2015-09-15	2017-04-04	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	60432056160	NDC	TRIAMCINOLONE ACETONIDE 0.1 % LOTN	2012-09-13	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	74312001530	NDC	ASCORBIC ACID 250 MG ORAL TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	51079018020	NDC	LITHIUM CARBONATE 300 MG TBCR	2015-09-15	2017-03-20	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	51079093120	NDC	CARVEDILOL 12.5 MG TABS	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2007-08-30	2017-03-19	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	54569036901	NDC	LITHIUM CARBONATE 300 MG CAPS	2015-09-15	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	68180051409	NDC	LISINOPRIL 10 MG TABS	2014-10-20	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	00228202750	NDC	ALPRAZOLAM 0.25 MG TABS	2016-04-21	2016-11-20	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	00603576321	NDC	SPIRONOLACTONE 25 MG TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2012-03-29	2017-03-19	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	58487002373	NDC	VITAMIN D3 1000 UNIT  TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	10135017336	NDC	ASPIRIN EC 81 MG TBEC	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Statement	CANCELLED	68382006816	NDC	SIMVASTATIN 40 MG TABS	2013-07-15	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	\N	CUSTOM	ALLEGRA-D 24 HOUR 180-240 MG  TB24	2017-01-31	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	\N	CUSTOM	LITHIUM CARBONATE 150 MG TBCR (LITHIUM CARBONATE)	2015-09-15	2017-04-04	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	00186091706	NDC	PULMICORT FLEXHALER 90 MCG/ACT INH AEPB	2017-01-31	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	51079093120	NDC	CARVEDILOL 12.5 MG TABS	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	54569036901	NDC	LITHIUM CARBONATE 300 MG CAPS	2015-09-15	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	58487002373	NDC	VITAMIN D3 1000 UNIT  TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	00603576321	NDC	SPIRONOLACTONE 25 MG TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	51079018020	NDC	LITHIUM CARBONATE 300 MG TBCR	2015-09-15	2017-03-20	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2007-08-30	2017-03-19	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2012-03-29	2017-03-19	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	54569637000	NDC	PROAIR HFA 108 (90 BASE) MCG/ACT  AERS	2017-01-31	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	59310020212	NDC	QVAR 40 MCG/ACT AERS	2017-01-31	2017-01-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	68180051409	NDC	LISINOPRIL 10 MG TABS	2014-10-20	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	00045029537	NDC	IMODIUM A-D 2 MG ORAL TABS	2017-01-31	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	10135017336	NDC	ASPIRIN EC 81 MG TBEC	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	74312001530	NDC	ASCORBIC ACID 250 MG ORAL TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	60432056160	NDC	TRIAMCINOLONE ACETONIDE 0.1 % LOTN	2012-09-13	4700-12-31	\N	\N	\N	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Statement	CANCELLED	68382006816	NDC	SIMVASTATIN 40 MG TABS	2013-07-15	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2012-03-29	2017-03-19	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	58487002373	NDC	VITAMIN D3 1000 UNIT  TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	00228202750	NDC	ALPRAZOLAM 0.25 MG TABS	2016-04-21	2016-11-20	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	51079018020	NDC	LITHIUM CARBONATE 300 MG TBCR	2015-09-15	2017-03-20	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	51079093120	NDC	CARVEDILOL 12.5 MG TABS	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	52427049501	NDC	ADALAT CC 60 MG TB24	2007-08-30	2017-03-19	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	60432056160	NDC	TRIAMCINOLONE ACETONIDE 0.1 % LOTN	2012-09-13	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	68180051409	NDC	LISINOPRIL 10 MG TABS	2014-10-20	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	\N	CUSTOM	LITHIUM CARBONATE 150 MG TBCR (LITHIUM CARBONATE)	2015-09-15	2017-04-04	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	00536109771	NDC	4X PROBIOTIC ORAL TABS	2015-09-15	2016-08-21	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	54569036901	NDC	LITHIUM CARBONATE 300 MG CAPS	2015-09-15	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	74312001530	NDC	ASCORBIC ACID 250 MG ORAL TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	00603576321	NDC	SPIRONOLACTONE 25 MG TABS	2015-10-15	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	10135017336	NDC	ASPIRIN EC 81 MG TBEC	2015-01-14	4700-12-31	\N	\N	\N	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Statement	CANCELLED	68382006816	NDC	SIMVASTATIN 40 MG TABS	2013-07-15	4700-12-31	\N	\N	\N	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Statement	Active	00143126401	NDC	Lisinopril-Hydrochlorothiazide 20-25 MG Oral Tablet	2017-02-09	\N	daily	20-25	\N	Oral
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Statement	Active	00378015201	NDC	CloNIDine HCl 0.1 MG Oral Tablet	2016-06-15	\N	QID prn bp over 150/95	0.1	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	Active	00054429925	NDC	Furosemide 40 MG Oral Tablet	2017-01-24	\N	daily with Potassium 20meq	40	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	CANCELLED	00143972601	NDC	Testosterone Cypionate 200 MG/ML Intramuscular Solution	2017-01-30	2017-03-01	weeklt X 4 weeks then weekly	200	\N	Intramuscular
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	Active	00228280311	NDC	Spironolactone 25 MG Oral Tablet	2017-01-30	\N	daily for edema. continue Lasix	25	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	CANCELLED	52244044910	NDC	Robaxin-750 750 MG Oral Tablet	2017-02-28	2017-03-10	PO TID	750	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	Active	00054429925	NDC	Furosemide 40 MG Oral Tablet	2017-01-24	\N	daily with Potassium 20meq	40	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	CANCELLED	00143972601	NDC	Testosterone Cypionate 200 MG/ML Intramuscular Solution	2017-01-30	2017-03-01	weeklt X 4 weeks then weekly	200	\N	Intramuscular
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	Active	00228280311	NDC	Spironolactone 25 MG Oral Tablet	2017-01-30	\N	daily for edema. continue Lasix	25	\N	Oral
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Statement	CANCELLED	52244044910	NDC	Robaxin-750 750 MG Oral Tablet	2017-02-28	2017-03-10	PO TID	750	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00440146530	NDC	DOCUSATE SODIUM, 100MG (Oral Capsule)	2012-07-10	\N	1 po bid	100	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00093474001	NDC	Citalopram Hydrobromide 10 MG Oral Tablet	2017-02-19	\N	po daily	10	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00168016315	NDC	Clobetasol Propionate 0.05 % External Cream	2017-01-26	\N	sparingly to leg rash BID	0.05	\N	External
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00179005730	NDC	CYCLOBENZAPRINE HCL, 10MG (Oral Tablet)	2014-02-24	\N	1 po qhs	10	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00378018101	NDC	ALLOPURINOL, 300MG (Oral Tablet)	2016-07-11	\N	po daily	300	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	00228299611	NDC	Tamsulosin HCl 0.4 MG Oral Capsule	2016-12-28	\N	po daily	0.4	\N	Oral
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Statement	Active	11917002801	NDC	Clotrimazole 1 % External Cream	2016-10-20	\N	apply to affected area BID	1	\N	External
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Statement	Active	00378347101	NDC	TraZODone HCl 50 MG Oral Tablet	2017-02-02	\N	PO 30min before bed	50	\N	Oral
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Statement	Active	\N	CUSTOM	MOTRIN, 800MG (Oral Tablet)	2009-10-28	\N	1 po tid with food	800	\N	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Statement	CANCELLED	00228203110	NDC	ALPRAZolam 1 MG Oral Tablet	2017-02-02	2017-03-04	PO at onset of panic attack	1	\N	Oral
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Statement	CANCELLED	00597018230	NDC	Glyxambi 10-5 MG Oral Tablet	2017-02-21	2017-03-23	once daily	10-5	\N	Oral
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Statement	Active	00440146530	NDC	Docusate Sodium 100 MG Oral Capsule	2016-09-27	\N	2 tabs po daily	100	\N	Oral
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Statement	Active	00093078701	NDC	Atenolol 25 MG Oral Tablet	2017-01-19	\N	bid	25	\N	Oral
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Statement	Active	00179195730	NDC	Hydrocodone-Acetaminophen 10-325 MG Oral Tablet	2017-02-21	\N	po qid prn	10-325	\N	Oral
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	00093104801	NDC	MetFORMIN HCl 500 MG Oral Tablet	2016-11-18	\N	2 in am 1 in pm	500	\N	Oral
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	00378459510	NDC	Metoprolol Succinate ER 25 MG Oral Tablet Extended Release 24 Hour	2016-12-20	\N	daily for blood pressure and heart disease management	25	\N	Oral
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	11917009960	NDC	TRUETEST TEST (In Vitro Strip)	2015-09-14	\N	test twice daily	\N	\N	InVitro
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	00093101042	NDC	Mupirocin 2 % External Ointment	2017-02-20	\N	3 times daily	2	\N	External
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	CANCELLED	33261087501	NDC	ProAir HFA 108 (90 Base) MCG/ACT Inhalation Aerosol Solution	2015-07-29	2017-03-22	every four hours, as needed	108 (90 Base)	\N	Inhalation
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	00054010122	NDC	AMLODIPINE BESYLATE, 5MG (Oral Tablet)	2012-03-16	\N	qd	5	\N	Oral
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	CANCELLED	00143971501	NDC	Lisinopril 5 MG Oral Tablet	2017-02-09	2017-03-11	1 daily	5	\N	Oral
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	CANCELLED	00597007541	NDC	Spiriva HandiHaler 18 MCG Inhalation Capsule	2016-10-04	2017-03-22	inhale 1 capsule daily	18	\N	Inhalation
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	Active	00173068220	NDC	VENTOLIN HFA, 108 (90 Base)MCG/ACT (Inhalation Aerosol Solution)	2015-01-06	\N	every 4-6 hours as needed	108 (90 Base)	\N	Inhalation
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Statement	CANCELLED	00378395205	NDC	Atorvastatin Calcium 40 MG Oral Tablet	2017-02-09	2017-03-11	po daily	40	\N	Oral
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Statement	Active	00069154041	NDC	Norvasc 10 mg tablet	2017-02-07	\N	take 1 tablet (10MG)  by oral route  every day	\N	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Statement	Active	00378013701	NDC	allopurinol 100 mg tablet	2017-02-07	\N	take 1 tablet (100MG)  by oral route  every day	\N	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Statement	Active	00115821101	NDC	tamsulosin 0.4 mg capsule	2017-02-07	\N	take 1 capsule by oral route  every day 1/2 hour following the same meal each day	\N	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Statement	Active	00378395105	NDC	atorvastatin 20 mg tablet	2017-02-07	\N	take 1 tablet by oral route  every day	\N	\N	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Statement	Active	10135012301	NDC	acetaminophen 325 mg tablet	2016-10-11	\N	take 1 to 2 tablet by oral route  every 8 hours as needed	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00228266711	NDC	gabapentin 400 mg capsule	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00228267211	NDC	spironolactone 50 mg tablet	2016-05-17	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00280200010	NDC	aspirin 325 mg tablet	2016-05-17	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	11917009921	NDC	Truetrack Blood Glucose System Kit	2013-08-21	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	54868585701	NDC	Qvar 40 mcg/actuation Metered Aerosol oral inhaler	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00093013501	NDC	carvedilol 6.25 mg tablet	2016-05-17	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00093104801	NDC	metformin 500 mg tablet	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00143126601	NDC	lisinopril 5 mg tablet	2017-02-27	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00245004300	NDC	potassium chloride ER 10 mEq tablet,extended release	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	33358026800	NDC	nitroglycerin 0.4 mg sublingual tablet	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	40986002138	NDC	Insulin Syringe 1/2 mL 29 x 1/2	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	54868564600	NDC	albuterol sulfate HFA 90 mcg/actuation aerosol inhaler	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00054429925	NDC	furosemide 40 mg tablet	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00169183311	NDC	Novolin R 100 unit/mL injection solution	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	\N	CUSTOM	Diabetic Shoes   	2015-06-19	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00002831501	NDC	Humulin N 100 unit/mL subcutaneous suspension	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	00093715410	NDC	simvastatin 20 mg tablet	2016-05-13	\N	\N	\N	\N	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Statement	Active	11822624390	NDC	Truetest Test Strips	2016-05-13	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY patient (patientid, encid, haoid, firstname, lastname, middleinitial, dateofbirth, language, racecode, ethnicitycode, admingender, aliveindicator, deceaseddatetime, streetaddress, city, state, zip, telecom, site_oid, patidextension) FROM stdin;
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	1.3.6.1.4.1.38630.3.1	Twxwxdzd	Nhrcih	\N	1972-01-01	Spanish	2106-3	2135-2	M	Y	\N	16985 NE 9th Pl	Tunnehill	TP	11336	4014887718	1.3.6.1.4.1.38630.2.1.1.83	84979F57-8415-4663-8068-02D2734340C2
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	1.3.6.1.4.1.38630.3.1	Twxwxdzd	Nhrcih	\N	1972-01-02	Spanish	2106-3	2135-2	M	Y	\N	16985 NE 9th Pl	Tunnehill	TP	11336	4014887718	1.3.6.1.4.1.38630.2.1.1.83	84979F57-8415-4663-8068-02D2734340C2
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	1.3.6.1.4.1.38630.3.1	Twxwxdzd	Nhrcih	\N	1972-01-03	Spanish	2106-3	2135-2	M	Y	\N	16985 NE 9th Pl	Tunnehill	TP	11336	4014887718	1.3.6.1.4.1.38630.2.1.1.83	84979F57-8415-4663-8068-02D2734340C2
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	1.3.6.1.4.1.38630.3.1	Vxwcxwy	Yqrh rr	N	1965-06-05	Unreported/Refused to Report	\N	\N	M	Y	\N	16985 NW 9th Pl	fqweqwe	TP	18281	7801441714	1.3.6.1.4.1.38630.2.1.1.257	1.49433E+15
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	1.3.6.1.4.1.38630.3.1	Vxwcxwy	Yqrh rr	N	1965-06-06	Unreported/Refused to Report	\N	\N	M	Y	\N	16985 NW 9th Pl	fqweqwe	TP	18281	7801441714	1.3.6.1.4.1.38630.2.1.1.257	1.49433E+15
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	1.3.6.1.4.1.38630.3.1	Vxwcxwy	Yqrh rr	N	1965-06-07	Unreported/Refused to Report	\N	\N	M	Y	\N	16985 NW 9th Pl	fqweqwe	TP	18281	7801441714	1.3.6.1.4.1.38630.2.1.1.257	1.49433E+15
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	1.3.6.1.4.1.38630.3.1	Vxwcxwy	Yqrh rr	N	1965-06-08	Unreported/Refused to Report	\N	\N	M	Y	\N	16985 NW 9th Pl	fqweqwe	TP	18281	7801441714	1.3.6.1.4.1.38630.2.1.1.257	1.49433E+15
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	1.3.6.1.4.1.38630.3.1	Dxwzxd	Uwdersqw	J	1959-08-14	English	\N	2186-5	M	Y	\N	16985 SW 9th Pl	fsdfasa	TP	11114	(401) 874-1188	1.3.6.1.4.1.38630.2.1.1.146	35155
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	1.3.6.1.4.1.38630.3.1	Yxchzxx	Uwdersqw	q	1959-03-15	English	\N	2186-5	M	Y	\N	16985 SE 9th Pl	Fiat	TP	11013	(401) 848-4887xMESS 	1.3.6.1.4.1.38630.2.1.1.146	67424
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	1.3.6.1.4.1.38630.3.1	Yzyyhxw	Uuhyhw	x	1959-07-16	English	\N	2186-5	M	Y	\N	PO Mailbox 60	fsadf	TP	11006	(401) 484-1888	1.3.6.1.4.1.38630.2.1.1.146	20024
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	1.3.6.1.4.1.38630.3.1	Yxxxwwz	Vhxdez	A	1970-08-17	English	\N	2186-5	F	Y	\N	Po Box 19999	aewfd	TP	11101	(401) 810-1877	1.3.6.1.4.1.38630.2.1.1.146	67124
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	1.3.6.1.4.1.38630.3.1	Yzwy	Nhyxey	A	1989-08-18	English	\N	2186-5	F	Y	\N	9877205 E Glenn Apt 54405	fsdfasa	TP	11114	(401) 884-8184	1.3.6.1.4.1.38630.2.1.1.146	22349
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	1.3.6.1.4.1.38630.3.1	Yxchzxx	Nqwghrd	R	1949-08-19	English	\N	2186-5	M	Y	\N	399965 Colle Rt	Moon Pond	TP	11148	(401) 877-0117	1.3.6.1.4.1.38630.2.1.1.146	52486
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	1.3.6.1.4.1.38630.3.1	Yzwyxx	Ucqsth	\N	1959-08-20	Spanish	2106-3	2135-2	M	Y	\N	443092 N Bellevue St	Utopia	TP	11330	4014708441	1.3.6.1.4.1.38630.2.1.1.83	83721712-DC2C-4EDA-8ADF-ED9F737DF054
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	1.3.6.1.4.1.38630.3.1	Skyx	Ucuwh	E	1959-08-21	English	2106-3	2186-5	F	N	1999-08-21	777419 Yolanda St	Worldie	TP	18512	7807848488	1.3.6.1.4.1.38630.2.1.1.254	9FD04484-748F-415F-B7D8-BF5F570286C3
+\.
+
+
+--
+-- Data for Name: problem; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY problem (patientid, encid, problemcategory, problemcode, codesystem, problem_description, onset_date, resolved_date, create_timestamp, problem_status) FROM stdin;
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	Assessment	54150009	SNOMED-CT	Upper respiratory infection	2017-02-27	2017-02-27	2017-02-27	Active
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	Assessment	89549007	SNOMED-CT	Catarrhal bronchitis	2017-02-23	2017-02-23	2017-02-23	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	207641005	SNOMED-CT	[X]Other specified abnormal findings of blood chemistry	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	80394007	SNOMED-CT	Hyperglycemia	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	111583006	SNOMED-CT	Leucocytosis	2016-07-29	\N	2016-07-29	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2014-11-13	\N	2014-11-13	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	195965009	SNOMED-CT	Other emphysema NOS	2016-08-18	\N	2016-08-22	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-10-13	\N	2015-10-13	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	35253001	SNOMED-CT	Attention deficit hyperactivity disorder, predominantly inattentive type	2009-05-07	\N	2012-07-01	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	441509002	SNOMED-CT	Cardiac pacemaker in situ	2015-01-14	\N	2015-01-19	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-25	\N	2016-08-25	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2014-05-22	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	111583006	SNOMED-CT	Leukocytosis	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	111583006	SNOMED-CT	Leukocytosis	2016-08-25	2016-08-25	2016-09-07	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2015-09-15	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	14669001	SNOMED-CT	Acute renal failure syndrome (disorder)	2016-07-29	\N	2016-07-29	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2016-08-09	\N	2016-08-09	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2012-08-18	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2014-02-20	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	195915000	SNOMED-CT	Pneumonia due to unspecified organism (disorder)	2012-06-28	\N	2012-08-18	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	200780008	SNOMED-CT	Contact dermatitis and other eczemas	2012-09-10	\N	2012-09-10	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	238131007	SNOMED-CT	Overweight	2014-10-31	\N	2014-10-31	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	399269003	SNOMED-CT	Arthropathy	2011-03-01	\N	2011-03-01	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2012-09-10	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	94921000000000	SNOMED-CT	Episodic mood disorder	2011-03-03	\N	2011-03-03	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	140031000000000	SNOMED-CT	Acute nontraumatic kidney injury	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	230361008	SNOMED-CT	Sepsis-associated encephalopathy	2016-08-25	2016-08-25	2016-09-07	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	80394007	SNOMED-CT	Hyperglycemia	2016-08-25	2016-08-25	2016-09-07	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2011-03-01	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2007-08-30	\N	2007-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2011-03-03	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	195967001	SNOMED-CT	Asthma	2014-03-13	\N	2014-03-13	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	220054007	SNOMED-CT	[X]Bus occupant injured in collision with pedestrian or animal (finding)	2014-05-22	\N	2014-05-22	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2012-04-17	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2009-05-12	\N	2009-05-12	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2017-02-13	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2014-07-22	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	13746004	SNOMED-CT	Bipolar disorder	2016-08-25	2016-08-25	2016-09-07	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	17569003	SNOMED-CT	Emphysematous bleb	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Assessment	230361008	SNOMED-CT	Sepsis-associated encephalopathy	2016-08-25	2016-08-25	2016-08-30	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2014-05-08	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-12-22	\N	2015-12-22	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2016-08-18	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	267580003	SNOMED-CT	Other extrapyramidal disease and abnormal movement disorders	2013-12-24	\N	2013-12-24	Active
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2010-11-18	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2014-10-20	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2017-02-02	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2011-07-17	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2016-08-22	Completed
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	Problem	53741008	SNOMED-CT	Coronary arteriosclerosis	2012-11-09	\N	2012-11-12	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2011-03-03	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-10-13	\N	2015-10-13	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2016-08-18	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2012-04-17	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2014-07-22	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	111583006	SNOMED-CT	Leukocytosis	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	17569003	SNOMED-CT	Emphysematous bleb	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	230361008	SNOMED-CT	Sepsis-associated encephalopathy	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	84229001	SNOMED-CT	Fatigue	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	111583006	SNOMED-CT	Leucocytosis	2016-07-29	\N	2016-07-29	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2014-05-08	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2014-02-20	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	195915000	SNOMED-CT	Pneumonia due to unspecified organism (disorder)	2012-06-28	\N	2012-08-18	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	200780008	SNOMED-CT	Contact dermatitis and other eczemas	2012-09-10	\N	2012-09-10	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	267580003	SNOMED-CT	Other extrapyramidal disease and abnormal movement disorders	2013-12-24	\N	2013-12-24	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2010-11-18	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	399269003	SNOMED-CT	Arthropathy	2011-03-01	\N	2011-03-01	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	441509002	SNOMED-CT	Cardiac pacemaker in situ	2015-01-14	\N	2015-01-19	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-25	\N	2016-08-25	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2011-03-01	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	\N	CUSTOM	H/O asbestos exposure	2016-09-12	\N	2016-09-12	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2015-09-15	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2014-11-13	\N	2014-11-13	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2016-08-09	\N	2016-08-09	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2012-08-18	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	195965009	SNOMED-CT	Other emphysema NOS	2016-08-18	\N	2016-08-22	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	195967001	SNOMED-CT	Asthma	2014-03-13	\N	2014-03-13	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	220054007	SNOMED-CT	[X]Bus occupant injured in collision with pedestrian or animal (finding)	2014-05-22	\N	2014-05-22	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2009-05-12	\N	2009-05-12	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	35253001	SNOMED-CT	Attention deficit hyperactivity disorder, predominantly inattentive type	2009-05-07	\N	2012-07-01	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2014-05-22	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	94921000000000	SNOMED-CT	Episodic mood disorder	2011-03-03	\N	2011-03-03	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	316827002	SNOMED-CT	[X]Persons with potential health hazards related to family and personal history and certain conditions influencing the health status (context-dependent category)	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Assessment	80394007	SNOMED-CT	Hyperglycemia	2016-09-12	2016-09-12	2016-09-16	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2007-08-30	\N	2007-08-30	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	14669001	SNOMED-CT	Acute renal failure syndrome (disorder)	2016-07-29	\N	2016-07-29	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-12-22	\N	2015-12-22	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	238131007	SNOMED-CT	Overweight	2014-10-31	\N	2014-10-31	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	271795006	SNOMED-CT	Malaise and fatigue	2016-09-12	\N	2016-09-12	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2014-10-20	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2011-07-17	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2017-02-13	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2016-08-22	Completed
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	53741008	SNOMED-CT	Coronary arteriosclerosis	2012-11-09	\N	2012-11-12	Active
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2012-09-10	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	17569003	SNOMED-CT	Emphysematous bleb	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	49727002	SNOMED-CT	Cough	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2015-09-15	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2014-05-08	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2012-08-18	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	195915000	SNOMED-CT	Pneumonia due to unspecified organism (disorder)	2012-06-28	\N	2012-08-18	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	195965009	SNOMED-CT	Other emphysema NOS	2016-08-18	\N	2016-08-22	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-10-13	\N	2015-10-13	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2016-08-18	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	267580003	SNOMED-CT	Other extrapyramidal disease and abnormal movement disorders	2013-12-24	\N	2013-12-24	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	35253001	SNOMED-CT	Attention deficit hyperactivity disorder, predominantly inattentive type	2009-05-07	\N	2012-07-01	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	441509002	SNOMED-CT	Cardiac pacemaker in situ	2015-01-14	\N	2015-01-19	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-25	\N	2016-08-25	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	54398005	SNOMED-CT	Acute upper respiratory infection	2017-01-31	2017-02-13	2017-01-31	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	230361008	SNOMED-CT	Sepsis-associated encephalopathy	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	233679003	SNOMED-CT	Late onset asthma	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	316827002	SNOMED-CT	[X]Persons with potential health hazards related to family and personal history and certain conditions influencing the health status (context-dependent category)	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	54150009	SNOMED-CT	Upper respiratory infection	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	59621000	SNOMED-CT	Essential hypertension	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	84229001	SNOMED-CT	Fatigue	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	\N	CUSTOM	H/O asbestos exposure	2016-09-12	\N	2016-09-12	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	111583006	SNOMED-CT	Leucocytosis	2016-07-29	\N	2016-07-29	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2007-08-30	\N	2007-08-30	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2014-11-13	\N	2014-11-13	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	14669001	SNOMED-CT	Acute renal failure syndrome (disorder)	2016-07-29	\N	2016-07-29	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2016-08-09	\N	2016-08-09	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2014-02-20	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	200780008	SNOMED-CT	Contact dermatitis and other eczemas	2012-09-10	\N	2012-09-10	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	238131007	SNOMED-CT	Overweight	2014-10-31	\N	2014-10-31	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	399269003	SNOMED-CT	Arthropathy	2011-03-01	\N	2011-03-01	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	49727002	SNOMED-CT	Cough	2017-01-31	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2014-05-22	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	80394007	SNOMED-CT	Hyperglycemia	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2011-03-01	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2011-03-03	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	195967001	SNOMED-CT	Asthma	2014-03-13	\N	2014-03-13	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	195967001	SNOMED-CT	Asthma	2017-01-31	2017-02-13	2017-01-31	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	220054007	SNOMED-CT	[X]Bus occupant injured in collision with pedestrian or animal (finding)	2014-05-22	\N	2014-05-22	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	271795006	SNOMED-CT	Malaise and fatigue	2016-09-12	\N	2016-09-12	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2014-10-20	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2012-04-17	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2009-05-12	\N	2009-05-12	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	49727002	SNOMED-CT	Cough	2017-01-31	2017-02-13	2017-01-31	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2016-08-22	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	53741008	SNOMED-CT	Coronary arteriosclerosis	2012-11-09	\N	2012-11-12	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	54398005	SNOMED-CT	Acute upper respiratory infection	2017-01-31	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2012-09-10	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	94921000000000	SNOMED-CT	Episodic mood disorder	2011-03-03	\N	2011-03-03	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Assessment	414916001	SNOMED-CT	Obesity	2017-01-31	2017-01-31	2017-02-08	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	195967001	SNOMED-CT	Asthma	2017-01-31	2017-02-13	2017-02-13	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-12-22	\N	2015-12-22	Active
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2010-11-18	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2011-07-17	Completed
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2014-07-22	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Assessment	207641005	SNOMED-CT	[X]Other specified abnormal findings of blood chemistry	2016-08-18	2016-08-18	2016-09-02	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2011-03-01	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	\N	CUSTOM	ENCOUNTER FOR LONG-TERM USE OF OTHER MEDICATIONS	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2015-09-15	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2012-08-18	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	195965009	SNOMED-CT	Other emphysema NOS	2016-08-18	\N	2016-08-22	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	195967001	SNOMED-CT	Asthma	2014-03-13	\N	2014-03-13	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	220054007	SNOMED-CT	[X]Bus occupant injured in collision with pedestrian or animal (finding)	2014-05-22	\N	2014-05-22	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	267580003	SNOMED-CT	Other extrapyramidal disease and abnormal movement disorders	2013-12-24	\N	2013-12-24	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2014-10-20	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2009-05-12	\N	2009-05-12	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	35253001	SNOMED-CT	Attention deficit hyperactivity disorder, predominantly inattentive type	2009-05-07	\N	2012-07-01	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	441509002	SNOMED-CT	Cardiac pacemaker in situ	2015-01-14	\N	2015-01-19	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2016-08-22	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	50122000	SNOMED-CT	Metabolic encephalopathy (disorder)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	53741008	SNOMED-CT	Coronary arteriosclerosis	2012-11-09	\N	2012-11-12	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	10509002	SNOMED-CT	Acute bronchitis	2015-09-15	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	111583006	SNOMED-CT	Leucocytosis	2016-07-29	\N	2016-07-29	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2014-05-08	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	18070006	SNOMED-CT	Impacted cerumen	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	193694002	SNOMED-CT	Other specified visual disturbance	2014-02-20	2017-02-02	2014-02-20	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	200780008	SNOMED-CT	Contact dermatitis and other eczemas	2012-09-10	\N	2012-09-10	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2010-11-18	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	399269003	SNOMED-CT	Arthropathy	2011-03-01	\N	2011-03-01	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Assessment	80394007	SNOMED-CT	Hyperglycemia	2016-08-18	2016-08-18	2016-09-02	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	18070006	SNOMED-CT	Impacted cerumen	2012-08-16	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	189064000	SNOMED-CT	Benign neoplasm of scalp and skin of neck	2011-03-01	2017-02-13	2011-03-03	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	195915000	SNOMED-CT	Pneumonia due to unspecified organism (disorder)	2012-06-28	\N	2012-08-18	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-10-13	\N	2015-10-13	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2016-08-18	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	271832001	SNOMED-CT	Flatulence, eructation and gas pain	2014-10-20	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2012-04-17	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2016-03-03	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2012-09-10	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2014-07-22	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	62315008	SNOMED-CT	Diarrhoea	2014-07-22	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	94921000000000	SNOMED-CT	Episodic mood disorder	2011-03-03	\N	2011-03-03	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Assessment	316827002	SNOMED-CT	[X]Persons with potential health hazards related to family and personal history and certain conditions influencing the health status (context-dependent category)	2016-08-18	2016-08-18	2016-09-02	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2007-08-30	\N	2007-08-30	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	111894000	SNOMED-CT	Other specified viral hepatitis without mention of hepatic coma	2014-11-13	\N	2014-11-13	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	14669001	SNOMED-CT	Acute renal failure syndrome (disorder)	2016-07-29	\N	2016-07-29	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2014-05-08	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	166922008	SNOMED-CT	Blood glucose abnormal	2016-08-09	\N	2016-08-09	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2015-12-22	\N	2015-12-22	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	207308003	SNOMED-CT	[D]Nonspecific blood finding NOS (situation)	2016-08-18	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	238131007	SNOMED-CT	Overweight	2014-10-31	\N	2014-10-31	Active
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	271795006	SNOMED-CT	Malaise and fatigue	2010-11-18	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	274193006	SNOMED-CT	Superficial injury of finger	2011-07-12	2017-02-13	2011-07-17	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	315703002	SNOMED-CT	[V]Need for immunization against viral hepatitis	2012-04-17	2017-02-13	2017-02-13	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	49727002	SNOMED-CT	Cough	2016-03-03	2017-02-02	2017-02-02	Completed
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	Problem	62315008	SNOMED-CT	Diarrhoea	2014-05-22	2017-02-13	2014-05-22	Completed
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Assessment	21794005	SNOMED-CT	de Quervains disease	2017-02-09	2017-02-09	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	234947003	SNOMED-CT	Dental disease	2016-06-08	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	54398005	SNOMED-CT	Acute upper respiratory infection	2010-02-12	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	80967001	SNOMED-CT	Dental caries	2010-02-12	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	111583006	SNOMED-CT	Leucocytosis	2016-06-13	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	125667009	SNOMED-CT	Contusion	2016-07-13	\N	2016-07-13	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	59621000	SNOMED-CT	Essential hypertension	2010-02-12	\N	2016-07-27	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	59621000	SNOMED-CT	Essential hypertension	2011-02-04	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Assessment	59621000	SNOMED-CT	Essential hypertension	2017-02-09	2017-02-09	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	125667009	SNOMED-CT	Contusion	2016-07-13	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	207281005	SNOMED-CT	[D]Other blood chemistry abnormality	2011-08-12	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	57676002	SNOMED-CT	Arthralgia	2017-02-09	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Assessment	57676002	SNOMED-CT	Arthralgia	2017-02-09	2017-02-09	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	191107008	SNOMED-CT	[X]Other hyperlipidemia (disorder)	2011-03-09	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	201045005	SNOMED-CT	Other atrophic and hypertrophic conditions of skin	2016-07-27	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	21794005	SNOMED-CT	de Quervains disease	2017-02-09	\N	2017-02-09	Active
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	Problem	390951007	SNOMED-CT	Impaired fasting glycaemia	2011-03-09	\N	2017-02-09	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	10050004	SNOMED-CT	Contusion of chest	2012-05-02	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	130951007	SNOMED-CT	Urinary retention	2017-02-28	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	197874009	SNOMED-CT	Other functional disorder of bladder	2015-07-09	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	212416006	SNOMED-CT	Other shoulder and upper arm injuries	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	219991006	SNOMED-CT	[X]Occupant of heavy transport vehicle injured in collision with heavy transport vehicle or bus (finding)	2017-01-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	220147003	SNOMED-CT	[X]Driver (& bus) injured in collision with other and unspecified motor vehicles in nontraffic accident (event)	2016-03-08	\N	2017-02-04	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	34436003	SNOMED-CT	Haematuria	2015-06-01	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	57676002	SNOMED-CT	Arthralgia	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	139394000	SNOMED-CT	Nocturia	2016-10-26	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	190561005	SNOMED-CT	Other testicular hypofunction NOS	2014-03-20	\N	2017-03-14	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	198036002	SNOMED-CT	Impotence of organic origin	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	212405004	SNOMED-CT	Other chest wall injuries	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	267038008	SNOMED-CT	Edema	2013-02-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	279039007	SNOMED-CT	Low back pain	2015-09-22	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	400047006	SNOMED-CT	Peripheral vascular disease	2015-06-05	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	52684005	SNOMED-CT	Assault	2017-02-26	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	699061004	SNOMED-CT	Injury of face and neck	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	91175000	SNOMED-CT	Seizure	2012-05-03	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	\N	CUSTOM	Encounter for long-term (current) use of high-risk medication	2013-04-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	156568004	SNOMED-CT	Joint ankylosis of other specified site	2015-06-11	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-24	\N	2016-05-04	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	161891005	SNOMED-CT	Pain in back	2012-07-10	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	190636002	SNOMED-CT	Other B-complex deficiency NOS	2014-03-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	191395004	SNOMED-CT	Other specified diseases of blood and blood-forming organs	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	201128002	SNOMED-CT	Hair and hair follicle diseases	2012-12-11	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	24366001	SNOMED-CT	Varicose veins of lower extremity with inflammation	2015-06-07	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	316680001	SNOMED-CT	[V]Screening for other/unspecified cardiovascular disease	2015-06-01	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	40930008	SNOMED-CT	Hypothyroidism	2014-03-20	\N	2017-03-14	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	82271004	SNOMED-CT	Injury of head (disorder)	2017-02-16	\N	2017-02-16	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Assessment	130951007	SNOMED-CT	Urinary retention	2017-02-28	2017-02-28	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-23	\N	2015-10-23	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-23	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	195638004	SNOMED-CT	[X]Other and unspecified disorders of the circulatory system classification terms (disorder)	2015-06-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	200644000	SNOMED-CT	Other cellulitis and abscess	2015-06-01	\N	2016-10-26	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	200692000	SNOMED-CT	Cellulitis and abscess NOS (disorder)	2017-01-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	209565008	SNOMED-CT	Lumbar sprain	2012-10-12	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	260912008	SNOMED-CT	Abnormal involuntary movement	2013-04-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	271737000	SNOMED-CT	Anaemia	2016-04-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	274162005	SNOMED-CT	Thoracic back sprain	2012-08-09	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2012-10-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	49650001	SNOMED-CT	Dysuria	2013-01-14	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	84757009	SNOMED-CT	Epilepsy	2012-06-08	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	10050004	SNOMED-CT	Contusion of chest	2012-05-02	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	130951007	SNOMED-CT	Urinary retention	2017-02-28	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	197874009	SNOMED-CT	Other functional disorder of bladder	2015-07-09	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	212416006	SNOMED-CT	Other shoulder and upper arm injuries	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	219991006	SNOMED-CT	[X]Occupant of heavy transport vehicle injured in collision with heavy transport vehicle or bus (finding)	2017-01-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	220147003	SNOMED-CT	[X]Driver (& bus) injured in collision with other and unspecified motor vehicles in nontraffic accident (event)	2016-03-08	\N	2017-02-04	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	34436003	SNOMED-CT	Haematuria	2015-06-01	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	57676002	SNOMED-CT	Arthralgia	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	139394000	SNOMED-CT	Nocturia	2016-10-26	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	190561005	SNOMED-CT	Other testicular hypofunction NOS	2014-03-20	\N	2017-03-14	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	198036002	SNOMED-CT	Impotence of organic origin	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	212405004	SNOMED-CT	Other chest wall injuries	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	267038008	SNOMED-CT	Edema	2013-02-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	279039007	SNOMED-CT	Low back pain	2015-09-22	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	400047006	SNOMED-CT	Peripheral vascular disease	2015-06-05	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	52684005	SNOMED-CT	Assault	2017-02-26	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	59621000	SNOMED-CT	Essential hypertension	2012-09-10	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	699061004	SNOMED-CT	Injury of face and neck	2017-02-16	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	91175000	SNOMED-CT	Seizure	2012-05-03	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	\N	CUSTOM	Encounter for long-term (current) use of high-risk medication	2013-04-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	156568004	SNOMED-CT	Joint ankylosis of other specified site	2015-06-11	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-24	\N	2016-05-04	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	161891005	SNOMED-CT	Pain in back	2012-07-10	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	190636002	SNOMED-CT	Other B-complex deficiency NOS	2014-03-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	191395004	SNOMED-CT	Other specified diseases of blood and blood-forming organs	2014-03-06	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	201128002	SNOMED-CT	Hair and hair follicle diseases	2012-12-11	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	24366001	SNOMED-CT	Varicose veins of lower extremity with inflammation	2015-06-07	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	316680001	SNOMED-CT	[V]Screening for other/unspecified cardiovascular disease	2015-06-01	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	40930008	SNOMED-CT	Hypothyroidism	2014-03-20	\N	2017-03-14	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	82271004	SNOMED-CT	Injury of head (disorder)	2017-02-16	\N	2017-02-16	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Assessment	130951007	SNOMED-CT	Urinary retention	2017-02-28	2017-02-28	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-23	\N	2015-10-23	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	15724005	SNOMED-CT	Fracture of vertebral column without spinal cord injury	2015-10-23	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	195638004	SNOMED-CT	[X]Other and unspecified disorders of the circulatory system classification terms (disorder)	2015-06-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	200644000	SNOMED-CT	Other cellulitis and abscess	2015-06-01	\N	2016-10-26	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	200692000	SNOMED-CT	Cellulitis and abscess NOS (disorder)	2017-01-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	209565008	SNOMED-CT	Lumbar sprain	2012-10-12	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	260912008	SNOMED-CT	Abnormal involuntary movement	2013-04-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	271737000	SNOMED-CT	Anaemia	2016-04-20	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	274162005	SNOMED-CT	Thoracic back sprain	2012-08-09	\N	2016-04-20	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	34713006	SNOMED-CT	Vitamin D deficiency	2012-10-01	\N	2017-02-28	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	49650001	SNOMED-CT	Dysuria	2013-01-14	\N	2016-01-13	Active
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	Problem	84757009	SNOMED-CT	Epilepsy	2012-06-08	\N	2017-02-28	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Assessment	201819000	SNOMED-CT	Generalized osteoarthritis	2017-03-08	2017-03-08	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	\N	CUSTOM	Special screening for malignant neoplasm of prostate	2010-02-15	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	14760008	SNOMED-CT	Constipation	2013-11-27	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	15188001	SNOMED-CT	Hearing impairment	2008-04-03	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	198288003	SNOMED-CT	Anxiety state	2011-12-30	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	21117005	SNOMED-CT	Conjunctival haemorrhage	2011-11-30	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	\N	CUSTOM	Encounter for long-term (current) use of other medications	2007-09-24	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	\N	CUSTOM	Encounter for long-term (current) use of other medications	2008-02-27	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	196339009	SNOMED-CT	Periapical abscess without a sinus	2007-09-24	\N	2017-01-17	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201023009	SNOMED-CT	Other specified pruritic conditions	2017-01-26	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201836008	SNOMED-CT	Primary localized osteoarthrosis of lower leg	2011-04-13	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201836008	SNOMED-CT	Primary localized osteoarthrosis of lower leg	2015-09-24	\N	2017-02-26	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	262285001	SNOMED-CT	Weight decreased	2012-09-18	\N	2014-11-12	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Assessment	201023009	SNOMED-CT	Other specified pruritic conditions	2017-03-08	2017-03-08	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Assessment	279039007	SNOMED-CT	Low back pain	2017-03-08	2017-03-08	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	\N	CUSTOM	Encounter for long-term (current) use of other medications	2007-12-21	\N	2013-01-22	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	16001004	SNOMED-CT	Earache	2008-02-11	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201819000	SNOMED-CT	Generalized osteoarthritis	2007-09-24	\N	2014-11-11	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201833000	SNOMED-CT	Primary localised osteoarthrosis of forearm	2013-07-31	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	262285001	SNOMED-CT	Weight decreased	2012-09-04	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	274664007	SNOMED-CT	Chest pain on breathing	2009-12-21	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	316341004	SNOMED-CT	[V]Other specified aftercare (situation)	2016-12-28	\N	2017-02-26	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	63102001	SNOMED-CT	Visual disturbance	2009-07-02	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	81680005	SNOMED-CT	Neck pain	2008-04-18	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	95087004	SNOMED-CT	Neoplasm of uncertain behavior of skin (disorder)	2010-02-15	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Assessment	\N	CUSTOM	Encounter for long-term (current) use of other medications	2017-03-08	2017-03-08	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	\N	CUSTOM	Colon cancer screening	2016-08-30	\N	2016-08-30	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	16001004	SNOMED-CT	Earache	2009-10-01	\N	2012-09-05	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	18818009	SNOMED-CT	Moderate recurrent major depression	2016-05-17	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	197961004	SNOMED-CT	Prostatic hyperplasia NOS	2014-05-28	\N	2017-03-08	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	201819000	SNOMED-CT	Generalized osteoarthritis	2008-01-08	\N	2017-04-05	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	209799008	SNOMED-CT	Sprain of costal cartilage	2011-12-01	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	271594007	SNOMED-CT	Syncope	2010-10-15	\N	2013-01-22	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	271594007	SNOMED-CT	Syncope	2011-03-06	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	274664007	SNOMED-CT	Chest pain on breathing	2009-12-23	\N	2014-11-11	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	279039007	SNOMED-CT	Low back pain	2015-02-11	\N	2017-04-05	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	29857009	SNOMED-CT	Chest pain	2011-06-29	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	363746003	SNOMED-CT	Acute pharyngitis	2014-05-05	\N	2015-09-01	Active
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	Problem	57676002	SNOMED-CT	Arthralgia	2010-09-23	\N	2015-09-01	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Assessment	\N	CUSTOM	Breast cancer screening	2017-02-02	2017-02-02	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Assessment	193462001	SNOMED-CT	Sleeplessness	2017-02-02	2017-02-02	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Assessment	29857009	SNOMED-CT	Chest pain	2017-02-02	2017-02-02	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Assessment	56576003	SNOMED-CT	Panic disorder without agoraphobia	2017-02-02	2017-02-02	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	\N	CUSTOM	Encounter for routine gynecological examination	2009-07-28	\N	2014-11-11	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	208647006	SNOMED-CT	Closed fracture of fibula, unspecified part, NOS	2015-06-05	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	220046005	SNOMED-CT	[X]Unspecified occupant of heavy transport vehicle injured in collision with other and unspecified motor vehicles in nontraffic accident (event)	2015-09-10	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	40055000	SNOMED-CT	Chronic sinusitis	2015-12-31	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	373717006	SNOMED-CT	Premature menopause	2015-09-10	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	\N	CUSTOM	Visit for screening mammogram	2015-09-10	\N	2015-09-10	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	315751005	SNOMED-CT	[V]Personal history of other certain diseases (situation)	2015-09-10	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	\N	CUSTOM	Breast cancer screening	2017-02-02	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	193462001	SNOMED-CT	Sleeplessness	2017-02-02	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	198592006	SNOMED-CT	[X]Other specified noninflammatory disorders of vulva and perineum (disorder)	2015-04-30	\N	2015-04-30	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	220115008	SNOMED-CT	[X]Bus occupant injured in collision with other nonmotor vehicle (finding)	2009-07-30	\N	2014-11-11	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	220115008	SNOMED-CT	[X]Bus occupant injured in collision with other nonmotor vehicle (finding)	2015-09-10	\N	2015-09-10	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	29857009	SNOMED-CT	Chest pain	2017-02-02	\N	2017-02-02	Active
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	Problem	56576003	SNOMED-CT	Panic disorder without agoraphobia	2017-02-02	\N	2017-02-02	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Assessment	219465002	SNOMED-CT	[X]Pedestrian injured in collision with other nonmotor vehicle, traffic accident (event)	2017-02-21	2017-02-21	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	212902009	SNOMED-CT	Other and unspecified external effect causes	2015-10-14	2017-02-21	2017-02-21	Completed
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	21522001	SNOMED-CT	Abdominal pain	2016-09-27	2017-02-21	2017-02-21	Completed
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	220033000	SNOMED-CT	[X]Occupant of heavy transport vehicle injured in noncollision transport accident (finding)	2014-09-15	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	220147003	SNOMED-CT	[X]Driver (& bus) injured in collision with other and unspecified motor vehicles in nontraffic accident (event)	2015-11-03	\N	2015-11-03	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	279039007	SNOMED-CT	Low back pain	2008-08-26	\N	2016-11-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	279039007	SNOMED-CT	Low back pain	2014-10-16	\N	2015-10-14	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	279039007	SNOMED-CT	Low back pain	2015-11-16	\N	2017-03-30	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	316341004	SNOMED-CT	[V]Other specified aftercare (situation)	2017-02-21	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	191204005	SNOMED-CT	Other hemoglobinopathy NOS	2016-10-18	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	219465002	SNOMED-CT	[X]Pedestrian injured in collision with other nonmotor vehicle, traffic accident (event)	2017-02-21	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	78975002	SNOMED-CT	Malignant essential hypertension	2013-02-08	\N	2017-03-30	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Assessment	111552007	SNOMED-CT	Diabetes mellitus without complication	2017-02-21	2017-02-21	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2016-02-03	\N	2017-04-03	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	1201005	SNOMED-CT	Benign essential hypertension (disorder)	2016-11-13	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	14760008	SNOMED-CT	Constipation	2016-09-27	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	162116003	SNOMED-CT	Increased frequency of micturition	2011-12-21	\N	2014-11-11	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	197385000	SNOMED-CT	Gallbladder calculus without mention of cholecystitis and no obstruction	2016-11-21	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	32398004	SNOMED-CT	Bronchitis	2014-01-17	\N	2014-10-16	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	49650001	SNOMED-CT	Dysuria	2017-01-12	\N	2017-01-12	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	57190000	SNOMED-CT	Myopia	2016-10-14	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Assessment	279039007	SNOMED-CT	Low back pain	2017-02-21	2017-02-21	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Assessment	316341004	SNOMED-CT	[V]Other specified aftercare (situation)	2017-02-21	2017-02-21	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	\N	CUSTOM	Colon cancer screening	2016-10-18	\N	2016-10-18	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	102614006	SNOMED-CT	Generalized abdominal pain	2016-10-18	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	12820001	SNOMED-CT	Disorder of sacrum	2009-06-03	\N	2017-02-21	Active
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	Problem	81680005	SNOMED-CT	Neck pain	2014-10-16	\N	2017-02-21	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	\N	CUSTOM	Pre-op evaluation	2011-10-09	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	\N	CUSTOM	Screen for colon cancer	2014-11-11	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2010-01-26	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	128306009	SNOMED-CT	Cataract	2014-06-30	\N	2017-01-19	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	158369003	SNOMED-CT	[D]Respiratory system and chest symptoms	2011-03-28	\N	2014-01-15	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	191107008	SNOMED-CT	[X]Other hyperlipidemia (disorder)	2010-01-26	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	195285004	SNOMED-CT	Aneurysm of leg artery NOS	2011-03-02	\N	2017-03-22	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	195285004	SNOMED-CT	Aneurysm of leg artery NOS	2016-11-23	\N	2016-12-08	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	195967001	SNOMED-CT	Asthma	2011-12-23	\N	2014-11-12	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	197941005	SNOMED-CT	Frank haematuria	2014-07-25	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	201037000	SNOMED-CT	Corns and callus	2016-02-16	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	262285001	SNOMED-CT	Weight decreased	2016-01-22	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	271737000	SNOMED-CT	Anaemia	2011-03-28	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	293241000000000	SNOMED-CT	Acute exacerbation of chronic obstructive bronchitis	2013-06-24	\N	2014-01-15	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	315817002	SNOMED-CT	[V]Family history of certain chronic disabling diseases (situation)	2008-01-30	\N	2014-12-10	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	73211009	SNOMED-CT	Diabetes mellitus	2014-11-25	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	75878002	SNOMED-CT	Abdominal aortic aneurysm without rupture	2016-11-23	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	86981007	SNOMED-CT	Infective otitis externa	2017-01-19	\N	2017-01-19	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	87522002	SNOMED-CT	Iron deficiency anemia	2011-09-02	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	\N	CUSTOM	Preop general physical exam	2014-06-30	\N	2014-06-30	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	125587004	SNOMED-CT	Superficial injury	2016-02-19	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	13290008	SNOMED-CT	Aneurysm of iliac artery (disorder)	2016-11-23	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	185086009	SNOMED-CT	Emphysematous bronchitis	2010-05-17	\N	2010-12-07	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	195285004	SNOMED-CT	Aneurysm of leg artery NOS	2016-11-23	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	210728009	SNOMED-CT	Open wound of toe(s) without mention of complication	2008-01-30	\N	2014-11-12	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	210728009	SNOMED-CT	Open wound of toe(s) without mention of complication	2013-09-04	\N	2013-10-10	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	210728009	SNOMED-CT	Open wound of toe(s) without mention of complication	2014-04-22	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	267783003	SNOMED-CT	Cellulitis and abscess of foot excluding toe	2016-02-16	\N	2016-02-16	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	269163001	SNOMED-CT	Open wound of head, neck and trunk	2016-11-30	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	293241000000000	SNOMED-CT	Acute exacerbation of chronic obstructive bronchitis	2016-01-11	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	54398005	SNOMED-CT	Acute upper respiratory infection	2011-03-28	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	58075000	SNOMED-CT	Contusion of toe	2010-02-22	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	59621000	SNOMED-CT	Essential hypertension	2014-04-25	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	90560007	SNOMED-CT	Gout	2013-05-01	\N	2016-11-30	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Assessment	195285004	SNOMED-CT	Aneurysm of leg artery NOS	2017-02-20	2017-02-20	2017-02-20	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	\N	CUSTOM	Colon cancer screening	2015-06-23	\N	2015-06-23	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	10509002	SNOMED-CT	Acute bronchitis	2013-05-01	\N	2013-10-10	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	10509002	SNOMED-CT	Acute bronchitis	2016-04-26	\N	2017-03-22	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	10509002	SNOMED-CT	Acute bronchitis	2017-01-05	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2011-12-02	\N	2016-04-14	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2016-10-13	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	1201005	SNOMED-CT	Benign essential hypertension (disorder)	2010-01-26	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	18070006	SNOMED-CT	Impacted cerumen	2013-10-24	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	188260006	SNOMED-CT	Malignant neoplasm of other and unspecified sites	2011-08-23	\N	2015-05-13	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	191107008	SNOMED-CT	[X]Other hyperlipidemia (disorder)	2014-01-15	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	200644000	SNOMED-CT	Other cellulitis and abscess	2017-01-10	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	201101007	SNOMED-CT	Actinic keratosis	2014-04-25	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	217838005	SNOMED-CT	Other accidents	2008-01-30	\N	2010-12-07	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	267783003	SNOMED-CT	Cellulitis and abscess of foot excluding toe	2016-12-08	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	279039007	SNOMED-CT	Low back pain	2010-10-06	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	315751005	SNOMED-CT	[V]Personal history of other certain diseases (situation)	2014-05-08	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	50043002	SNOMED-CT	Respiratory disease	2010-01-26	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	53741008	SNOMED-CT	Coronary arteriosclerosis	2008-03-20	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	68566005	SNOMED-CT	Urinary tract infection	2011-01-07	\N	2014-11-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	80659006	SNOMED-CT	Disorder of skin and subcutaneous tissue	2016-05-20	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	86981007	SNOMED-CT	Infective otitis externa	2017-01-10	\N	2017-01-10	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	\N	CUSTOM	Encounter for long-term (current) use of other medications	2008-03-20	\N	2014-01-15	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2016-02-11	\N	2016-02-11	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	127013003	SNOMED-CT	Diabetic nephropathy	2014-04-25	\N	2016-11-22	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	201329000	SNOMED-CT	Other specified skin disorder NOS	2013-12-13	\N	2014-01-15	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	219465002	SNOMED-CT	[X]Pedestrian injured in collision with other nonmotor vehicle, traffic accident (event)	2012-07-25	\N	2012-07-25	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	220022003	SNOMED-CT	[X]Occupant of heavy transport vehicle injured in collision with fixed or stationary object (finding)	2016-01-22	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	220033000	SNOMED-CT	[X]Occupant of heavy transport vehicle injured in noncollision transport accident (finding)	2015-10-26	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	267783003	SNOMED-CT	Cellulitis and abscess of foot excluding toe	2015-05-21	\N	2015-05-21	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	267783003	SNOMED-CT	Cellulitis and abscess of foot excluding toe	2015-06-03	\N	2015-06-03	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	399326009	SNOMED-CT	Malignant neoplasm of urinary bladder	2011-08-31	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	400047006	SNOMED-CT	Peripheral vascular disease	2010-01-26	\N	2017-03-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	54398005	SNOMED-CT	Acute upper respiratory infection	2015-01-23	\N	2015-01-28	Active
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	Problem	68566005	SNOMED-CT	Urinary tract infection	2010-12-07	\N	2014-11-11	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Assessment	59621000	SNOMED-CT	Essential hypertension	2017-02-07	2017-02-07	2017-02-07	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Assessment	68451005	SNOMED-CT	Chronic gouty arthritis	2017-02-07	2017-02-07	2017-02-07	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Problem	201819000	SNOMED-CT	Generalized osteoarthritis	\N	\N	2016-10-11	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Assessment	267434003	SNOMED-CT	Mixed hyperlipidemia (disorder)	2017-02-07	2017-02-07	2017-02-07	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Assessment	249607009	SNOMED-CT	Large prostate	2017-02-07	2017-02-07	2017-02-07	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Problem	238040008	SNOMED-CT	Familial combined hyperlipidaemia	\N	\N	2014-08-08	Active
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	Problem	706882009	SNOMED-CT	Hypertensive crisis	\N	\N	2014-08-08	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	111552007	SNOMED-CT	Diabetes mellitus without complication	2010-05-28	\N	2014-08-09	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	1201005	SNOMED-CT	Benign essential hypertension (disorder)	2010-07-26	\N	2014-08-09	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	230572002	SNOMED-CT	Diabetic neuropathy	2015-06-19	\N	2015-06-19	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	32914008	SNOMED-CT	Restless legs syndrome	2010-07-26	\N	2014-08-09	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	418304008	SNOMED-CT	Diastolic heart failure	2015-01-16	\N	2015-01-16	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	52515009	SNOMED-CT	Hernia of abdominal cavity	2010-11-09	\N	2014-08-09	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	49455004	SNOMED-CT	Diabetic polyneuropathy	2015-06-19	\N	2015-06-19	Active
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	Problem	50711007	SNOMED-CT	Hepatitis C	2013-09-27	\N	2014-08-09	Active
+\.
+
+
+--
+-- Data for Name: procedure; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY procedure (patientid, encid, cc_cpt_code, codesystem, description, cc_date_of_service, tencounterid, targetsitecode) FROM stdin;
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	90471	CPT-4	Immunization admin	2015-09-14	14234126	\N
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	99211	CPT-4	Office/outpatient visit est	2015-09-14	14234126	\N
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	90656	CPT-4	Flu vaccine no preserv 3 & >	2015-09-14	14234126	\N
+100000001TP	a789f698-846b-4y76-b45l-57uytrew462d	G0008	CPT-4	\N	2015-09-14	14234126	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	99213	CPT-4	Office/outpatient visit est	2017-02-27	74324342	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	G0467	CPT-4	Medical Encounter	2017-02-27	74324342	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	99213	CPT-4	Office/outpatient visit est	2017-02-23	89282032	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	G0467	CPT-4	Medical Encounter	2017-02-23	89282032	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	G0008	CPT-4	\N	2017-02-23	89282032	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	90674	CPT-4	\N	2017-02-23	89282032	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	36415	CPT-4	Routine venipuncture	2016-08-25	89234023	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	99214	CPT-4	Office/outpatient visit est	2016-08-25	89234023	\N
+100000002TP	83r6g164-8th5-4769-b406-cdc60985489i	G0467	CPT-4	Medical Encounter	2016-08-25	89234023	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	36415	CPT-4	Routine venipuncture	2016-09-12	98329392	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	82948	CPT-4	Reagent strip/blood glucose	2016-09-12	98329392	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	99214	CPT-4	Office/outpatient visit est	2016-09-12	98329392	\N
+100000002TP	07ut0y4e-4650-42k6-8t76-a66g1t252768	G0467	CPT-4	Medical Encounter	2016-09-12	98329392	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	80061	CPT-4	Lipid panel	2017-01-31	63545597	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	94640	CPT-4	Airway inhalation treatment	2017-01-31	63545597	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	80305	CPT-4	\N	2017-01-31	63545597	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	99214	CPT-4	Office/outpatient visit est	2017-01-31	63545597	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	36415	CPT-4	Routine venipuncture	2017-01-31	63545597	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	G0467	CPT-4	Medical Encounter	2017-01-31	63545597	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	99214	CPT-4	Office/outpatient visit est	2016-08-18	53657292	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	G0467	CPT-4	Medical Encounter	2016-08-18	53657292	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	-1694	CPT-4	\N	2017-02-09	75765540	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	99213	CPT-4	Office/outpatient visit est	2017-02-09	75765540	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	-1694	CPT-4	\N	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	99000	CPT-4	Specimen handling office-lab	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	81002	CPT-4	Urinalysis nonauto w/o scope	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	76770	CPT-4	Us exam abdo back wall comp	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	99213	CPT-4	Office/outpatient visit est	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	-1694	CPT-4	\N	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	99000	CPT-4	Specimen handling office-lab	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	81002	CPT-4	Urinalysis nonauto w/o scope	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	76770	CPT-4	Us exam abdo back wall comp	2017-02-28	13537494	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	99213	CPT-4	Office/outpatient visit est	2017-02-28	13537494	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	99213	CPT-4	Office/outpatient visit est	2017-03-08	64538748	82094008
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	-1694	CPT-4	\N	2017-03-08	64538748	82094008
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	-1694	CPT-4	\N	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	36415	CPT-4	Routine venipuncture	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	G0202	CPT-4	HCPCS Mammogram Code	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	93000	CPT-4	Electrocardiogram complete	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	80061	CPT-4	Lipid panel	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	84439	CPT-4	Assay of free thyroxine	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	99213	CPT-4	Office/outpatient visit est	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	80053	CPT-4	Comprehen metabolic panel	2017-02-02	54378926	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	85027	CPT-4	Complete cbc automated	2017-02-02	54378926	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	83036	CPT-4	Glycosylated hemoglobin test	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	-1694	CPT-4	\N	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	24253	CPT-4	\N	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	27434	CPT-4	\N	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	49574	CPT-4	\N	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	2028F	CPT-4	Foot exam performed	2017-02-21	65829494	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	90715	CPT-4	Tdap vaccine 7 yrs/> im	2017-02-21	65829494	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	-1694	CPT-4	\N	2017-02-20	64352628	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	99213	CPT-4	Office/outpatient visit est	2017-02-20	64352628	\N
+100000001TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	G0009	CPT-4	\N	2017-02-07	98765432	\N
+100000001TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	G0467	CPT-4	Medical Encounter	2017-02-07	98765432	\N
+100000001TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	90670	CPT-4	Pneumococcal vacc 13 val im	2017-02-07	98765432	\N
+100000001TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	99214	CPT-4	Office/outpatient visit est	2017-02-07	98765432	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	36415	CPT-4	Routine venipuncture	2017-03-06	98765432	\N
+100000010TP	ab7t4gcc-763e-8042-91z5-3y87338456d5	99214	CPT-4	Office/outpatient visit est	2017-03-06	98765432	\N
+\.
+
+
+--
+-- Data for Name: smoking; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY smoking (patientid, encid, smoking_status_code, smoking_status_code_code_system, smoking_status_display_name, start_time, end_date) FROM stdin;
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	1	Custom	TOBACCO USE: Currently smokes less than 1/2 PPD	2011-08-12	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	1	Custom	Smokes 1 pack of cigarettes per day	2012-11-09	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	1	Custom	TOBACCO USE: Currently smokes 1/2 PPD	2011-03-06	2011-03-06
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	1	Custom	Smokes 1 pack of cigarettes per day	2015-12-31	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	1	Custom	TOBACCO USE: Currently smokes 1/2 PPD	2010-05-20	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	1	Custom	TOBACCO USE: Currently smokes less than 1/2 PPD	2012-09-07	\N
+\.
+
+
+--
+-- Data for Name: vitals; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY vitals (patientid, encid, vitalcode, codesystem, description, vitals_date, vitals, units) FROM stdin;
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	29463-7	LOINC	Weight	2017-02-27	175.80000000	lb
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8867-4	LOINC	Heart Rate	2017-02-27	72.00000000	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8889-8	LOINC	SPO2	2017-02-27	98.00000000	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8310-5	LOINC	Temperature	2017-02-27	98.50000000	DegF
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8302-2	LOINC	Height	2017-02-27	68.50000000	in
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8462-4	LOINC	Diastolic	2017-02-27	76.00000000	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	8480-6	LOINC	Systolic	2017-02-27	138.00000000	\N
+100000001TP	9lk9t0f5-b4i9-4yyu-9e9c-3e766818jut4	39156-5	LOINC	BMI	2017-02-27	26.34000000	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	8302-2	LOINC	Height	2017-02-23	68.50000000	in
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	8867-4	LOINC	Heart Rate	2017-02-23	80.00000000	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	8310-5	LOINC	Temperature	2017-02-23	97.70000000	DegF
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	8462-4	LOINC	Diastolic	2017-02-23	80.00000000	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	8480-6	LOINC	Systolic	2017-02-23	122.00000000	\N
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	29463-7	LOINC	Weight	2017-02-23	175.00000000	lb
+100000001TP	1937654c-6725-40u8-bkj0-34571hy7r16c	39156-5	LOINC	BMI	2017-02-23	26.22000000	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	29463-7	LOINC	Weight	2017-01-31	191.00000000	lb
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8867-4	LOINC	Heart Rate	2017-01-31	64.00000000	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	39156-5	LOINC	BMI	2017-01-31	29.06000000	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8462-4	LOINC	Diastolic	2017-01-31	70.00000000	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8302-2	LOINC	Height	2017-01-31	68.10000000	in
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8310-5	LOINC	Temperature	2017-01-31	97.90000000	F
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8480-6	LOINC	Systolic	2017-01-31	118.00000000	\N
+100000002TP	a8u5575b-e433-4h90-b863-68ca87uic0e6	8889-8	LOINC	SPO2	2017-01-31	96.00000000	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	29463-7	LOINC	Weight	2016-08-18	185.50000000	lb
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	8867-4	LOINC	Heart Rate	2016-08-18	88.00000000	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	8302-2	LOINC	Height	2016-08-18	68.10000000	in
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	8310-5	LOINC	Temperature	2016-08-18	98.00000000	F
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	39156-5	LOINC	BMI	2016-08-18	28.22000000	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	8462-4	LOINC	Diastolic	2016-08-18	70.00000000	\N
+100000002TP	06543d67-e79f-4952-9yub-11tyg4a9875f	8480-6	LOINC	Systolic	2016-08-18	120.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	59574-4	LOINC	BMI Percentile	2017-02-09	1.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	29463-7	LOINC	Weight	2017-02-09	224.25000000	lb
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8302-2	LOINC	Height	2017-02-09	70.00000000	in
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8480-6	LOINC	Systolic	2017-02-09	142.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	39156-5	LOINC	BMI	2017-02-09	32.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8462-4	LOINC	Diastolic	2017-02-09	88.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8867-4	LOINC	Heart Rate	2017-02-09	87.00000000	\N
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8310-5	LOINC	Temperature	2017-02-09	98.10000000	F
+100000003TP	ecc9876b-9544-4yrc-96w0-4y76b5ti7f84	8889-8	LOINC	SPO2	2017-02-09	96.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8462-4	LOINC	Diastolic	2017-02-28	80.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8302-2	LOINC	Height	2017-02-28	71.00000000	in
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8310-5	LOINC	Temperature	2017-02-28	96.50000000	F
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	39156-5	LOINC	BMI	2017-02-28	35.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	59574-4	LOINC	BMI Percentile	2017-02-28	1.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8867-4	LOINC	Heart Rate	2017-02-28	94.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8889-8	LOINC	SPO2	2017-02-28	99.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	29463-7	LOINC	Weight	2017-02-28	248.25000000	lb
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8480-6	LOINC	Systolic	2017-02-28	100.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8462-4	LOINC	Diastolic	2017-02-28	80.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8302-2	LOINC	Height	2017-02-28	71.00000000	in
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8310-5	LOINC	Temperature	2017-02-28	96.50000000	F
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	39156-5	LOINC	BMI	2017-02-28	35.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	59574-4	LOINC	BMI Percentile	2017-02-28	1.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8867-4	LOINC	Heart Rate	2017-02-28	94.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8889-8	LOINC	SPO2	2017-02-28	99.00000000	\N
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	29463-7	LOINC	Weight	2017-02-28	248.25000000	lb
+100000004TP	6764h59e-4y72-4tt8-97y0-28904bd5t6be	8480-6	LOINC	Systolic	2017-02-28	100.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	39156-5	LOINC	BMI	2017-03-08	21.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	8302-2	LOINC	Height	2017-03-08	61.00000000	in
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	8867-4	LOINC	Heart Rate	2017-03-08	82.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	8889-8	LOINC	SPO2	2017-03-08	98.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	59574-4	LOINC	BMI Percentile	2017-03-08	1.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	8480-6	LOINC	Systolic	2017-03-08	126.00000000	\N
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	29463-7	LOINC	Weight	2017-03-08	112.25000000	lb
+100000005TP	a800455f-e765-4hh0-b77a-6y5yut4d04h2	8462-4	LOINC	Diastolic	2017-03-08	56.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8310-5	LOINC	Temperature	2017-02-02	97.30000000	F
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	29463-7	LOINC	Weight	2017-02-02	141.00000000	lb
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8302-2	LOINC	Height	2017-02-02	62.00000000	in
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	39156-5	LOINC	BMI	2017-02-02	26.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8480-6	LOINC	Systolic	2017-02-02	102.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	59574-4	LOINC	BMI Percentile	2017-02-02	1.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8462-4	LOINC	Diastolic	2017-02-02	64.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8867-4	LOINC	Heart Rate	2017-02-02	83.00000000	\N
+100000006TP	96767e2y-bt68-8850-b72a-c00cd736t2d6	8889-8	LOINC	SPO2	2017-02-02	97.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8302-2	LOINC	Height	2017-02-21	65.50000000	in
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8462-4	LOINC	Diastolic	2017-02-21	72.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8867-4	LOINC	Heart Rate	2017-02-21	82.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8889-8	LOINC	SPO2	2017-02-21	95.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	29463-7	LOINC	Weight	2017-02-21	127.60000000	lb
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	59574-4	LOINC	BMI Percentile	2017-02-21	1.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8480-6	LOINC	Systolic	2017-02-21	138.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	39156-5	LOINC	BMI	2017-02-21	21.00000000	\N
+100000007TP	4yuy41f5-76te-47yb-a7yf-fdww166u95eb	8310-5	LOINC	Temperature	2017-02-21	97.20000000	F
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8302-2	LOINC	Height	2017-02-20	72.00000000	in
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8310-5	LOINC	Temperature	2017-02-20	97.10000000	F
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8889-8	LOINC	SPO2	2017-02-20	99.00000000	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8462-4	LOINC	Diastolic	2017-02-20	50.00000000	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8867-4	LOINC	Heart Rate	2017-02-20	45.00000000	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	29463-7	LOINC	Weight	2017-02-20	162.25000000	lb
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	39156-5	LOINC	BMI	2017-02-20	22.00000000	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	59574-4	LOINC	BMI Percentile	2017-02-20	1.00000000	\N
+100000008TP	1b13b437-2f61-4f59-9433-3u5d76t39yu0	8480-6	LOINC	Systolic	2017-02-20	102.00000000	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	39156-5	LOINC	BMI	2017-02-07	28.58000000	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	8867-4	LOINC	Heart Rate	2017-02-07	80.00000000	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	29463-7	LOINC	Weight	2017-02-07	188.00000000	lb
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	8302-2	LOINC	Height	2017-02-07	68.00000000	in
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	8310-5	LOINC	Temperature	2017-02-07	97.90000000	DegF
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	8462-4	LOINC	Diastolic	2017-02-07	82.00000000	\N
+100000009TP	cghg51d7-86t1-4h3a-god3-e3g7b488319f	8480-6	LOINC	Systolic	2017-02-07	158.00000000	\N
+\.
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

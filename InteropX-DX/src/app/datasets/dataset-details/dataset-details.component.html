@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-title color="primary">
+    <div class="content-header">
+      <h1>Data Set - Data Set Name</h1>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="dataset-details">
+      <div class="datasources">
+        <app-table [options]="tableOptions" (action)="getDataSourceRow($event)"></app-table>
+      </div>
+      <div class="patients">
+        <app-table [options]="patientTableOptions" *ngIf="dataSourceSelected" (action)="getPatientRow($event)"></app-table>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

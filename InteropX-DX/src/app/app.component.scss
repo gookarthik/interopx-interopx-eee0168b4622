@@ -1,0 +1,76 @@
+@import '~@angular/material/theming';
+.buttonAccent {
+  background-color: mat-color($mat-orange, A100);
+}
+
+.content {
+  position: relative;
+  height: 100%;
+  padding: 65px 0 40px 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  overflow: auto;
+  background: #fff;
+  top: 65px;
+  bottom: 40px;
+  width: 100%;
+  position: absolute;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.main-content {
+  height: 100%; // margin-left: 250px;
+  // padding: 20px 30px;
+  overflow: auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.mat-sidenav {
+  position: relative;
+}
+
+.example-container {
+  // position: absolute;
+  // top: 60px;
+  // bottom: 60px;
+  left: 0;
+  right: 0;
+}
+
+.example-sidenav {
+  float: left; // display: flex; // align-items: center;
+  // justify-content: center;
+  width: 250px;
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  min-height: 100% !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.mat-sidenav-content {
+  min-height: 90vh;
+  padding: 30px;
+}

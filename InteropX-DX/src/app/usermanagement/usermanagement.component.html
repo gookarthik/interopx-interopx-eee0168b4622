@@ -1,0 +1,79 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>User Management</h1>
+            <button color="primary" mat-raised-button (click)="createNewUser();">Create User</button>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-form-field class="example-full-width">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type here to Filter List">
+    </mat-form-field>
+    <mat-table [dataSource]="dataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="edituser();">Edit User</button>
+                    <button mat-menu-item>Send Email Invite</button>
+                    <button mat-menu-item>Send Password Reset Link</button>
+                    <button mat-menu-item>View Group Membership</button>
+                    <button mat-menu-item>Remove From All Groups</button>
+                    <button mat-menu-item (click)="assigngrpstouser(row);">Assign Groups to User</button>
+                    <button mat-menu-item (click)="deactivateuser(row);">De-Activate User</button>
+                </mat-menu>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>First Name </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                {{element.fname}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="lname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                {{element.lname}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="sysadmin">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Sys Admin </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <mat-icon>done</mat-icon>
+            </mat-cell>
+            <mat-icon>done</mat-icon>
+        </ng-container>
+
+        <ng-container matColumnDef="grpadmin">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Group Admin </mat-header-cell>
+            <mat-icon>done</mat-icon>
+            <mat-cell *matCellDef="let element">
+                <mat-icon>done</mat-icon>
+            </mat-cell>
+
+        </ng-container>-->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" class="mat-elevation-z4">
+    </mat-paginator>
+</mat-card>

@@ -1,0 +1,24 @@
+@import 'variables';
+.mat-dialog-title {
+  color: $primary-blue;
+  font-size: 22px;
+}
+.mat-dialog-actions{
+    float: right;
+}
+.actions button {
+    margin-left: 10px;
+}
+.example-full-width{
+    width: 100%;
+    margin-top: 10px;
+}
+.mat-card{
+    margin-bottom: 10px;
+}
+.mat-table{
+    width: 100%;
+}
+.mat-paginator{
+    margin-bottom: 25px;
+}

@@ -1,0 +1,51 @@
+@import 'variables';
+.header {
+  width: 100%;
+  background: $header-background;
+  position: fixed;
+  top: 0;
+  height: 65px !important;
+  opacity: .8;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+}
+
+.custom-logo {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.header-left {
+  min-width: 12.5%;
+  float: left;
+}
+
+.header-center {
+  width: 75%;
+  float: left;
+}
+
+.header-right {
+  min-width: 12.5%;
+  float: left;
+}
+
+.userInformation {
+  margin-top: 15px;
+  margin-right: 50px;
+  color: #fff;
+  float: right;
+}
+
+.userInformation .userName {
+  float: left;
+  color: #fff;
+  margin: 15px 0px !important;
+}
+
+.userInformation .menubtn {
+  padding: 0px;
+  min-width: 0px;
+  line-height: 46px;
+  color: #fff;
+}

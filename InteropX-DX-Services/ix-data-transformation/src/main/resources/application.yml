@@ -1,0 +1,21 @@
+### Spring properties
+# Service registers under this name
+spring:
+  application:
+    name: ix-transformation
+
+# Discovery Server Access
+#eureka:
+#    client:
+#      serviceUrl:
+#        defaultZone: http://localhost:1111/eureka/
+
+# HTTP Server (Tomcat) Port
+server: 
+  port: 2021
+
+# Disable Spring Boot's "Whitelabel" default error page, so we can use our own
+  error:
+    whitelabel:
+      enabled: false
+      

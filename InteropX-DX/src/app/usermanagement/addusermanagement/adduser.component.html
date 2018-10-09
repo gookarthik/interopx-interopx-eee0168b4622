@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>{{title}} User</h1>
+<div mat-dialog-content>
+    <form [formGroup]="userform" class="user-form">
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="username" placeholder="UserName" required>
+        </mat-form-field>
+        <div *ngIf="userform.controls['username'].errors && !userform.controls['username'].pristine" class="alert alert-danger">
+            <div [hidden]="!userform.controls['username'].errors.required">UserName is required.</div>
+        </div>
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="email" placeholder="Email" required>
+        </mat-form-field>
+        <div *ngIf="userform.controls['email'].hasError('required') && userform.controls['email'].touched" class="alert alert-danger">You must enter a valid email.</div>
+        <div *ngIf="userform.controls['email'].errors?.pattern" class="alert alert-danger">
+            Enter a valid Email.
+        </div>
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="firstname" placeholder=" FirstName" required>
+        </mat-form-field>
+        <div *ngIf="userform.controls['firstname'].errors && !userform.controls['firstname'].pristine" class="alert alert-danger">
+            <div [hidden]="!userform.controls['firstname'].errors.required">First Name is required.</div>
+        </div>
+        <div *ngIf="userform.controls['firstname'].errors?.pattern" class="alert alert-danger">
+            Enter a valid First Name.
+        </div>
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" formControlName="lname" placeholder="LastName" required>
+        </mat-form-field>
+        <div *ngIf="userform.controls['lname'].errors && !userform.controls['lname'].pristine" class="alert alert-danger">
+            <div [hidden]="!userform.controls['lname'].errors.required">LastName is required.</div>
+        </div>
+        <div *ngIf="userform.controls['lname'].errors?.pattern" class="alert alert-danger">
+            Enter a valid LastName.
+        </div>
+    </form>
+
+</div>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>close</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="onSave()" [disabled]="userform.invalid">Save</button>
+</mat-dialog-actions>

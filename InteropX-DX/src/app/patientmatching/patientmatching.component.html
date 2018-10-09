@@ -1,0 +1,197 @@
+<mat-card>
+    <mat-card-title color="primary">
+        <div class="content-header">
+            <h1>Patient Id Matching and Linking</h1>
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <h2>InteropX Data Repository-Patient Record</h2>
+    <div class="apptable">
+        <!--<app-table [options]="tableOptions" (action)="getrepositoryDetails($event);"></app-table>-->
+        <mat-table [dataSource]="existingdataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+            <ng-container matColumnDef="group">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Group </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.group}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> InteropX Id </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+
+                    <a (click)=openDialog(element);> {{element.Id}}</a>
+
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.fName}} </mat-cell>
+                <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.fName === 'AARAN'}"> {{element.fName}} </mat-cell>-->
+            </ng-container>
+
+            <ng-container matColumnDef="lname">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.lname}} </mat-cell>
+                <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.lname == 'MILLER'}"> {{element.lname}} </mat-cell>-->
+            </ng-container>
+
+            <ng-container matColumnDef="mname">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Middle Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.mname}} </mat-cell>
+                <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.mname == 'L'}"> {{element.mname}} </mat-cell>-->
+            </ng-container>
+            <ng-container matColumnDef="dob">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.dob}} </mat-cell>
+                <!--<mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': element.birth == '14-04-1985 00:00:00'}"> {{element.birth}} </mat-cell>-->
+            </ng-container>
+
+            <ng-container matColumnDef="gender">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="phone">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="existingdisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: existingdisplayedColumns;"></mat-row>
+
+            <!--<mat-header-row *matHeaderRowDef="dispalyedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>-->
+        </mat-table>
+
+    </div>
+    <h2>Partially Matching-Patient Records</h2>
+    <!--<div class="conflictapptable">
+        <!--<app-table [options]="conflicttableOptions"></app-table>-->
+    <mat-table [dataSource]="dataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="SId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Source Id </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <a> {{element.SId}}</a>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+            <!-- <mat-cell *matCellDef="let element"> {{element.fName}} </mat-cell>-->
+            <mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': mismatchelements.includes('firstName') === true}">
+                {{element.fName}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+            <!--<mat-cell *matCellDef="let element"> {{element.lname}} </mat-cell>-->
+            <mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': mismatchelements.includes('lastName') === true}"> {{element.lname}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Middle Name </mat-header-cell>
+            <!-- <mat-cell *matCellDef="let element"> {{element.mname}} </mat-cell>-->
+            <mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': mismatchelements.includes('middleInitial') === true}">
+                {{element.mname}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="birth">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Date of Birth </mat-header-cell>
+            <!--<mat-cell *matCellDef="let element"> {{element.birth}} </mat-cell>-->
+            <mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': mismatchelements.includes('dateOfBirth') === true}">
+                {{element.birth}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Gender </mat-header-cell>
+            <mat-cell *matCellDef="let row; let element" [ngClass]="{'highlight': mismatchelements.includes('adminGender') === true}">
+                {{element.gender}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
+
+        <!--<mat-header-row *matHeaderRowDef="dispalyedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>-->
+    </mat-table>
+    <!--<span>{{mismatchelements}}</span>-->
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" class="mat-elevation-z4">
+    </mat-paginator>
+    <!--</div>-->
+    <div class="flex-container">
+        <div class="linkbutton">
+            <button color="primary" mat-raised-button (click)="link()">Link</button>
+        </div>
+        <div class="excludebutton">
+            <button color="primary" mat-raised-button (click)="exclude()">Exclude</button>
+        </div>
+        <div class="button">
+            <div class="nextbutton">
+                <button color="primary" mat-raised-button disabled="{{next}}" (click)="nextGroup()">Next</button>
+            </div>
+            <div class="prebutton">
+                <button color="primary" mat-raised-button disabled="{{previous}}" (click)="prevGroup()">Prev</button>
+            </div>
+        </div>
+    </div>
+    <!--<mat-table [dataSource]="dataSource" #table matSort class="mat-elevation-z4 table-bordered">
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> Conflict Patients </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="possible">
+            <th mat-header-cell *matHeaderCellDef> Pontential Matches </th>
+            <td mat-cell *matCellDef="let element"> {{element.possible}} </td>
+        </ng-container>
+        <ng-container matColumnDef="matching">
+            <th mat-header-cell *matHeaderCellDef> Matching Elements </th>
+            <td mat-cell *matCellDef="let element"> {{element.possible}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Mismatch">
+            <th mat-header-cell *matHeaderCellDef colspan="2"> Mis-Matching Elements </th>
+            <td mat-cell *matCellDef="let element"> {{element.possible}} </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+        </tr>
+
+    </mat-table>
+
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" class="mat-elevation-z4">
+    </mat-paginator>-->
+
+
+</mat-card>
+<app-loading [isLoading]="isLoadingResults"></app-loading>

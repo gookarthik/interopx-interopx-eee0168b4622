@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title color="primary">
+    <div class="content-header">
+      <h1>Data Sets</h1>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <app-table [options]="tableOptions" (action)="getRowDetails($event);"></app-table>
+  </mat-card-content>
+</mat-card>
